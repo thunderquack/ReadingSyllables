@@ -28,12 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.labelSyllable = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // labelSyllable
+            // 
+            this.labelSyllable.AutoSize = true;
+            this.labelSyllable.Location = new System.Drawing.Point(12, 9);
+            this.labelSyllable.Name = "labelSyllable";
+            this.labelSyllable.Size = new System.Drawing.Size(38, 15);
+            this.labelSyllable.TabIndex = 0;
+            this.labelSyllable.Text = "label1";
+            // 
+            // FormSyllables
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Controls.Add(this.labelSyllable);
+            this.Name = "FormSyllables";
+            this.Text = "Слоги";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSyllables_KeyPress);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private Label labelSyllable;
     }
 }

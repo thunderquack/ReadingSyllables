@@ -34,7 +34,7 @@
             // labelSyllable
             // 
             this.labelSyllable.AutoSize = true;
-            this.labelSyllable.Location = new System.Drawing.Point(17, 15);
+            this.labelSyllable.Location = new System.Drawing.Point(0, 0);
             this.labelSyllable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSyllable.Name = "labelSyllable";
             this.labelSyllable.Size = new System.Drawing.Size(59, 25);

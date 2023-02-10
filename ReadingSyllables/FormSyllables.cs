@@ -29,7 +29,7 @@ namespace ReadingSyllables
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height < (sender as Form).Width - 100)
+            while (sz.Height < (sender as Form).Height - 100)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
@@ -41,7 +41,7 @@ namespace ReadingSyllables
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height > (sender as Form).Width)
+            while (sz.Height > (sender as Form).Height)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);

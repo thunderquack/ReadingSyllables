@@ -1,4 +1,6 @@
-﻿namespace ReadingSyllables
+﻿using System.Reflection.Metadata;
+
+namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
@@ -12,36 +14,44 @@
         {
             prevSyllable = SyllablesGenerator.GenerateSyllable(2, prevSyllable);
             labelSyllable.Text = prevSyllable;
-
+            this.Refresh();
             //Graphics.MeasureString()
 
-            while (labelSyllable.Width > ((sender as Form) != null ? (sender as Form).Width : 800))
-            {
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
-            }
-
-            while (labelSyllable.Height > ((sender as Form) != null ? (sender as Form).Height : 800))
-            {
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
-            }
-
-            while (labelSyllable.Width < ((sender as Form) != null ? (sender as Form).Width - 300 : 0))
-            {
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
-            }
-
-            while (labelSyllable.Height < ((sender as Form) != null ? (sender as Form).Height - 300 : 0))
-            {
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
-            }
         }
 
-        private void tlPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
         private void FormSyllables_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+            
+            SizeF sz = e.Graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+            int width = (sender as Form).Width - 100;
+            int height = (sender as Form).Height - 100;
+            labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height/4, labelSyllable.Font.Style);
+
+
+            while (sz.Width < (sender as Form).Width - 100)
+            {
+                sz = e.Graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
+            }
+
+            while (sz.Height < (sender as Form).Width - 100)
+            {
+                sz = e.Graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
+            }
+
+            while (sz.Width > (sender as Form).Width)
+            {
+                sz = e.Graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
+            }
+
+            while (sz.Height > (sender as Form).Width)
+            {
+                sz = e.Graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
+            }
 
         }
     }

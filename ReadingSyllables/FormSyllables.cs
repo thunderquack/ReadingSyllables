@@ -4,6 +4,8 @@ namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
+        private bool sizeWasChanged = true;
+
         private string prevSyllable = "";
         public FormSyllables()
         {
@@ -20,7 +22,12 @@ namespace ReadingSyllables
             SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
             int width = form.Width - 100;
             int height = form.Height - 100;
-            labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
+
+            if (sizeWasChanged)
+            {
+                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
+                sizeWasChanged= false;
+            }
             labelSyllable.Size = new Size(form.Width, form.Height);
 
             while (sz.Width < (sender as Form).Width - 100)
@@ -47,6 +54,11 @@ namespace ReadingSyllables
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
 
+        }
+
+        private void FormSyllables_Resize(object sender, EventArgs e)
+        {
+            sizeWasChanged= true;
         }
     }
 }

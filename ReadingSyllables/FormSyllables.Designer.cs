@@ -51,6 +51,7 @@
             this.Name = "FormSyllables";
             this.Text = "Слоги";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSyllables_KeyPress);
+            this.Resize += new System.EventHandler(this.FormSyllables_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -34,20 +34,23 @@
             // labelSyllable
             // 
             this.labelSyllable.AutoSize = true;
-            this.labelSyllable.Location = new System.Drawing.Point(12, 9);
+            this.labelSyllable.Location = new System.Drawing.Point(17, 15);
+            this.labelSyllable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSyllable.Name = "labelSyllable";
-            this.labelSyllable.Size = new System.Drawing.Size(38, 15);
+            this.labelSyllable.Size = new System.Drawing.Size(59, 25);
             this.labelSyllable.TabIndex = 0;
             this.labelSyllable.Text = "label1";
             // 
             // FormSyllables
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1143, 750);
             this.Controls.Add(this.labelSyllable);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormSyllables";
             this.Text = "Слоги";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSyllables_Paint);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSyllables_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -13,6 +13,8 @@
             prevSyllable = SyllablesGenerator.GenerateSyllable(2, prevSyllable);
             labelSyllable.Text = prevSyllable;
 
+            //Graphics.MeasureString()
+
             while (labelSyllable.Width > ((sender as Form) != null ? (sender as Form).Width : 800))
             {
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
@@ -35,6 +37,10 @@
         }
 
         private void tlPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void FormSyllables_Paint(object sender, PaintEventArgs e)
         {
 
         }

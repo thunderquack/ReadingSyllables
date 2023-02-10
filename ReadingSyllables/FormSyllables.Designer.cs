@@ -50,7 +50,6 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FormSyllables";
             this.Text = "Слоги";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSyllables_Paint);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSyllables_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();

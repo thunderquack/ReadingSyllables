@@ -48,10 +48,5 @@ namespace ReadingSyllables
             }
 
         }
-
-        private void FormSyllables_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
     }
 }

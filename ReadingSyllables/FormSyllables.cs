@@ -1,4 +1,6 @@
-﻿namespace ReadingSyllables
+﻿using Newtonsoft.Json;
+
+namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
@@ -6,10 +8,12 @@
 
         private string syllable = "";
         private string nextSyllable = "";
+        private Settings settings;
 
         public FormSyllables()
         {
             InitializeComponent();
+            settings = Settings.Load();
             syllable = SyllablesGenerator.GenerateSyllable(2);
         }
 

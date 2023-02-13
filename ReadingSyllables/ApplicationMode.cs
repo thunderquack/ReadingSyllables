@@ -2,7 +2,7 @@
 {
     internal enum ApplicationMode
     {
-        Random,
-        Rating,
+        Random = 0,
+        Rating = 1,
     }
 }

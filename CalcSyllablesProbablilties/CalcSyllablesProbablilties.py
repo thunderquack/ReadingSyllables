@@ -1,4 +1,4 @@
-import rusyllab
+import rusyllab #https://github.com/Koziev/rusyllab
 from os import listdir
 from os.path import isfile, join
 from collections import Counter

@@ -21,7 +21,6 @@
             Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
 
-            int width = form.Width - 100;
             int height = form.Height - titleHeight;
 
             SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);

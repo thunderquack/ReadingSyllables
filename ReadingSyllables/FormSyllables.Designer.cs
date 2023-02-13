@@ -33,13 +33,14 @@
             // 
             // labelSyllable
             // 
-            this.labelSyllable.AutoSize = true;
+            this.labelSyllable.AutoSize = false;
             this.labelSyllable.Location = new System.Drawing.Point(0, 0);
             this.labelSyllable.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSyllable.Name = "labelSyllable";
             this.labelSyllable.Size = new System.Drawing.Size(59, 25);
             this.labelSyllable.TabIndex = 0;
-            this.labelSyllable.Text = "label1";
+            this.labelSyllable.Text = "Слог";
+            this.labelSyllable.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // FormSyllables
             // 

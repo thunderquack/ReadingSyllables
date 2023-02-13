@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 .vscode
 /src/m2trust.SelfServiceApp.Linux.Client/*.zip
+/CalcSyllablesProbablilties/env

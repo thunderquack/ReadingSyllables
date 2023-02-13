@@ -4,17 +4,21 @@
     {
         private bool sizeWasChanged = true;
 
-        private string prevSyllable = "";
+        private string syllable = "";
+        private string nextSyllable = "";
 
         public FormSyllables()
         {
             InitializeComponent();
+            syllable = SyllablesGenerator.GenerateSyllable(2);
         }
 
         private void FormSyllables_KeyPress(object sender, KeyPressEventArgs e)
         {
-            prevSyllable = SyllablesGenerator.GenerateSyllable(2, prevSyllable);
-            labelSyllable.Text = prevSyllable;
+            nextSyllable = SyllablesGenerator.GenerateSyllable(2, syllable);
+            labelSyllable.Text = syllable;
+            this.Text = nextSyllable;
+            syllable = nextSyllable;
             Graphics g = Graphics.FromHwndInternal(this.Handle);
             var form = sender as Form;
 

@@ -17,19 +17,18 @@
         {
             nextSyllable = SyllablesGenerator.GenerateSyllable(2, syllable);
             labelSyllable.Text = syllable;
-            this.Text = nextSyllable;
+            Text = nextSyllable;
             syllable = nextSyllable;
             Graphics g = Graphics.FromHwndInternal(this.Handle);
-            var form = sender as Form;
 
             Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
 
-            int height = form.Height - titleHeight;
+            int height = this.Height - titleHeight;
 
             SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
 
-            labelSyllable.Size = new Size(form.Width, form.Height);
+            labelSyllable.Size = new Size(this.Width, this.Height);
 
             if (sizeWasChanged)
             {
@@ -37,25 +36,25 @@
                 sizeWasChanged = false;
             }
 
-            while (sz.Width < form.Width)
+            while (sz.Width < this.Width)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height < form.Height - titleHeight)
+            while (sz.Height < this.Height - titleHeight)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Width > form.Width)
+            while (sz.Width > this.Width)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height > form.Height - titleHeight)
+            while (sz.Height > this.Height - titleHeight)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);

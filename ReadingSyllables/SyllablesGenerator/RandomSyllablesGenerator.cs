@@ -10,8 +10,6 @@
             'а', 'е', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'
         };
 
-        private Random r = new Random();
-
         public int Length { get; private set; }
 
         public void SetLength(int length)
@@ -28,7 +26,7 @@
             switch (Length)
             {
                 case 2:
-                    int idx = r.Next(0, VOVELS.Count - 1);
+                    int idx = random.Next(0, VOVELS.Count - 1);
                     char vovel = VOVELS[idx];
                     bool dangerousVovel = false;
                     if (vovel == 'ы' || vovel == 'ю' || vovel == 'я')
@@ -44,7 +42,7 @@
                         consonants.Remove('ш');
                         consonants.Remove('щ');
                     }
-                    idx = r.Next(0, consonants.Count - 1);
+                    idx = random.Next(0, consonants.Count - 1);
                     char consonant = consonants[idx];
                     string res = $"{consonant}{vovel}".ToUpper();
                     if (res == prevSyllable)

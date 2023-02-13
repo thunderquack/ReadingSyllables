@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ReadingSyllables
+﻿namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
@@ -9,17 +7,23 @@ namespace ReadingSyllables
         private string syllable = "";
         private string nextSyllable = "";
         private Settings settings;
+        private AbstractSyllableGenerator syllablesGenerator;
 
         public FormSyllables()
         {
             InitializeComponent();
             settings = Settings.Load();
-            syllable = SyllablesGenerator.GenerateSyllable(2);
+            if (settings.Mode == ApplicationMode.Random)
+            {
+                syllablesGenerator = new RandomSyllablesGenerator();
+                (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
+                syllable = syllablesGenerator.GenerateSyllable();
+            }
         }
 
         private void FormSyllables_KeyPress(object sender, KeyPressEventArgs e)
         {
-            nextSyllable = SyllablesGenerator.GenerateSyllable(2, syllable);
+            nextSyllable = syllablesGenerator.GenerateSyllable();
             labelSyllable.Text = syllable;
             Text = nextSyllable;
             syllable = nextSyllable;

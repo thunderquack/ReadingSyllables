@@ -1,20 +1,29 @@
 ﻿namespace ReadingSyllables
 {
-    internal static class SyllablesGenerator
+    internal class RandomSyllablesGenerator : AbstractSyllableGenerator
     {
-        private static List<char> CONSONANTS = new List<char>() {
+        private List<char> CONSONANTS = new List<char>() {
             'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ'
         };
 
-        private static List<char> VOVELS = new List<char>() {
+        private List<char> VOVELS = new List<char>() {
             'а', 'е', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'
         };
 
-        private static Random r = new Random();
+        private Random r = new Random();
 
-        public static string GenerateSyllable(int length, string prevSyllable = "")
+        public int Length { get; private set; }
+
+        public void SetLength(int length)
         {
-            switch (length)
+            Length = length;
+        }
+
+        private string prevSyllable = "";
+
+        public override string GenerateSyllable()
+        {
+            switch (Length)
             {
                 case 2:
                     int idx = r.Next(0, VOVELS.Count - 1);
@@ -38,9 +47,10 @@
                     string res = ($"{consonant}{vovel}").ToUpper();
                     if (res == prevSyllable)
                     {
-                        return GenerateSyllable(length, prevSyllable);
+                        return GenerateSyllable();
                     }
-                    return ($"{consonant}{vovel}").ToUpper();
+                    prevSyllable = $"{consonant}{vovel}".ToUpper();
+                    return prevSyllable;
 
                 default:
                     return "";

@@ -1,4 +1,6 @@
-﻿namespace ReadingSyllables
+﻿using ReadingSyllables.SyllablesGenerator;
+
+namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
@@ -15,7 +17,7 @@
             settings = Settings.Load();
             if (settings.Mode == ApplicationMode.Random)
             {
-                syllablesGenerator = new RandomSyllablesGenerator();
+                syllablesGenerator = new RandomSyllablesGenerator(settings);
                 (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
                 syllable = syllablesGenerator.GenerateSyllable();
             }

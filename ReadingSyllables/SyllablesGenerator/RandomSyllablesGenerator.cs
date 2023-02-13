@@ -1,4 +1,4 @@
-﻿namespace ReadingSyllables
+﻿namespace ReadingSyllables.SyllablesGenerator
 {
     internal class RandomSyllablesGenerator : AbstractSyllableGenerator
     {
@@ -20,6 +20,10 @@
         }
 
         private string prevSyllable = "";
+
+        public RandomSyllablesGenerator(Settings settings) : base(settings)
+        {
+        }
 
         public override string GenerateSyllable()
         {
@@ -44,7 +48,7 @@
                     }
                     idx = r.Next(0, consonants.Count - 1);
                     char consonant = consonants[idx];
-                    string res = ($"{consonant}{vovel}").ToUpper();
+                    string res = $"{consonant}{vovel}".ToUpper();
                     if (res == prevSyllable)
                     {
                         return GenerateSyllable();

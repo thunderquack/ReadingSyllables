@@ -1,13 +1,11 @@
-﻿using System.Reflection.Metadata;
-using static System.Windows.Forms.LinkLabel;
-
-namespace ReadingSyllables
+﻿namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
         private bool sizeWasChanged = true;
 
         private string prevSyllable = "";
+
         public FormSyllables()
         {
             InitializeComponent();
@@ -29,7 +27,7 @@ namespace ReadingSyllables
             if (sizeWasChanged)
             {
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
-                sizeWasChanged= false;
+                sizeWasChanged = false;
             }
 
             while (sz.Width < form.Width)
@@ -55,12 +53,11 @@ namespace ReadingSyllables
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
-
         }
 
         private void FormSyllables_Resize(object sender, EventArgs e)
         {
-            sizeWasChanged= true;
+            sizeWasChanged = true;
         }
     }
 }

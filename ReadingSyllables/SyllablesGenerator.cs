@@ -5,9 +5,11 @@
         private static List<char> CONSONANTS = new List<char>() {
             'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ'
         };
+
         private static List<char> VOVELS = new List<char>() {
-            'а', 'е', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я' 
+            'а', 'е', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'
         };
+
         private static Random r = new Random();
 
         public static string GenerateSyllable(int length, string prevSyllable = "")
@@ -39,6 +41,7 @@
                         return GenerateSyllable(length, prevSyllable);
                     }
                     return ($"{consonant}{vovel}").ToUpper();
+
                 default:
                     return "";
             }

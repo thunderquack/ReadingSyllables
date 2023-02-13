@@ -15,11 +15,18 @@ namespace ReadingSyllables
         {
             InitializeComponent();
             settings = Settings.Load();
-            if (settings.Mode == ApplicationMode.Random)
+            switch (settings.Mode)
             {
-                syllablesGenerator = new RandomSyllablesGenerator(settings);
-                (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
-                syllable = syllablesGenerator.GenerateSyllable();
+                case ApplicationMode.Random:
+                default:
+                    syllablesGenerator = new RandomSyllablesGenerator(settings);
+                    (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
+                    syllable = syllablesGenerator.GenerateSyllable();
+                    break;
+                case ApplicationMode.Rating:
+                    syllablesGenerator = new RatingSyllablesGenerator(settings);
+                    syllable = syllablesGenerator.GenerateSyllable();
+                    break;
             }
         }
 

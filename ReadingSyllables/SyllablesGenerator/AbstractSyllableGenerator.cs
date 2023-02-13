@@ -3,6 +3,8 @@
     internal abstract class AbstractSyllableGenerator
     {
         protected readonly Settings settings;
+        protected string prevSyllable = "";
+
 
         public abstract string GenerateSyllable();
 

@@ -19,8 +19,6 @@
             Length = length;
         }
 
-        private string prevSyllable = "";
-
         public RandomSyllablesGenerator(Settings settings) : base(settings)
         {
         }

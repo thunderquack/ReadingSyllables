@@ -18,12 +18,16 @@
             Graphics g = Graphics.FromHwndInternal(this.Handle);
             var form = sender as Form;
 
+            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
+            int titleHeight = screenRectangle.Top - this.Top;
+
             int width = form.Width - 100;
-            int height = form.Height - 100;
+            int height = form.Height - titleHeight;
 
             SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
 
             labelSyllable.Size = new Size(form.Width, form.Height);
+
             if (sizeWasChanged)
             {
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
@@ -36,7 +40,7 @@
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height < form.Height)
+            while (sz.Height < form.Height - titleHeight)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
@@ -48,7 +52,7 @@
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height > form.Height)
+            while (sz.Height > form.Height - titleHeight)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);

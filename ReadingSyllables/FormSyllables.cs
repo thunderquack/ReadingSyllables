@@ -1,4 +1,5 @@
 ﻿using System.Reflection.Metadata;
+using static System.Windows.Forms.LinkLabel;
 
 namespace ReadingSyllables
 {
@@ -19,36 +20,37 @@ namespace ReadingSyllables
             Graphics g = Graphics.FromHwndInternal(this.Handle);
             var form = sender as Form;
 
-            SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
             int width = form.Width - 100;
             int height = form.Height - 100;
 
+            SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
+
+            labelSyllable.Size = new Size(form.Width, form.Height);
             if (sizeWasChanged)
             {
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
                 sizeWasChanged= false;
             }
-            labelSyllable.Size = new Size(form.Width, form.Height);
 
-            while (sz.Width < (sender as Form).Width - 100)
+            while (sz.Width < form.Width)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height < (sender as Form).Height - 100)
+            while (sz.Height < form.Height)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Width > (sender as Form).Width)
+            while (sz.Width > form.Width)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
             }
 
-            while (sz.Height > (sender as Form).Height)
+            while (sz.Height > form.Height)
             {
                 sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
                 labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);

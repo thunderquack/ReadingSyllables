@@ -49,7 +49,7 @@
             this.Name = "FormSyllables";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Слоги";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSyllables_KeyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSyllables_KeyDown);
             this.Resize += new System.EventHandler(this.FormSyllables_Resize);
             this.ResumeLayout(false);
 

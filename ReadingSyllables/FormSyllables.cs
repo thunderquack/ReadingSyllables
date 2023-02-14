@@ -30,8 +30,16 @@ namespace ReadingSyllables
             }
         }
 
-        private void FormSyllables_KeyPress(object sender, KeyPressEventArgs e)
-        {
+        private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
+        {            
+            if (e.KeyCode == Keys.F12)
+            {
+                return;
+            }
+            if (e.KeyCode == Keys.F11)
+            {
+                return;
+            }
             nextSyllable = syllablesGenerator.GenerateSyllable();
             labelSyllable.Text = syllable;
             Text = nextSyllable;
@@ -82,5 +90,6 @@ namespace ReadingSyllables
         {
             sizeWasChanged = true;
         }
+
     }
 }

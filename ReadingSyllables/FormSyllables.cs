@@ -37,19 +37,42 @@ namespace ReadingSyllables
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
         {
-            ShowSettingsInTitle();
-            if (e.KeyCode == Keys.F12)
-            {
-                return;
-            }
             if (e.KeyCode == Keys.F11)
             {
-                return;
+                switch (settings.Mode)
+                {
+                    case ApplicationMode.Random:
+                    default:
+                        return;
+                    case ApplicationMode.Rating:
+                        if (syllablesGenerator.Settings.MaxRating > 2)
+                        {
+                            syllablesGenerator.Settings.MaxRating--;
+                            ShowSettingsInTitle();
+                        }
+                        return;
+                }
+            }
+            if (e.KeyCode == Keys.F12)
+            {
+                switch (settings.Mode)
+                {
+                    case ApplicationMode.Random:
+                    default:
+                        return;
+                    case ApplicationMode.Rating:
+                        if (syllablesGenerator.Settings.MaxRating < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
+                        {
+                            syllablesGenerator.Settings.MaxRating++;
+                            ShowSettingsInTitle();
+                        }
+                        return;
+                }
             }
             nextSyllable = syllablesGenerator.GenerateSyllable();
             labelSyllable.Text = syllable;
-            Text = nextSyllable;
             syllable = nextSyllable;
+            ShowSettingsInTitle();
             Graphics g = Graphics.FromHwndInternal(this.Handle);
 
             Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);

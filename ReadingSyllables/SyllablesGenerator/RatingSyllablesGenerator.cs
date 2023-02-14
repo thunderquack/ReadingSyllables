@@ -10,7 +10,7 @@ namespace ReadingSyllables.SyllablesGenerator
 
         public override string GenerateSyllable()
         {
-            string syllable = Syllables.Keys.ElementAt(random.Next(0, Settings.MaxRating - 1)).ToUpper();
+            string syllable = Syllables.Keys.ElementAt(random.Next(0, Settings.MaxRating)).ToUpper();
             if (syllable == prevSyllable)
             {
                 return (GenerateSyllable());
@@ -24,7 +24,11 @@ namespace ReadingSyllables.SyllablesGenerator
 
         public override string GetShortSettings()
         {
-            throw new NotImplementedException();
+            return $"Rating - Maximum rating: {Settings.MaxRating}";
+        }
+        public int GetLength()
+        {
+            return Syllables.Count;
         }
 
         public RatingSyllablesGenerator(Settings settings) : base(settings)

@@ -59,7 +59,7 @@
 
         public override string GetShortSettings()
         {
-            throw new NotImplementedException();
+            return $"Random - Length: {Length}";
         }
     }
 }

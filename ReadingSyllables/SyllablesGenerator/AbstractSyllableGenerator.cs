@@ -2,7 +2,7 @@
 {
     internal abstract class AbstractSyllableGenerator
     {
-        protected readonly Settings settings;
+        public Settings Settings { get; private set; }
         protected string prevSyllable = ""; 
         protected Random random = new();
 
@@ -10,7 +10,7 @@
 
         public AbstractSyllableGenerator(Settings settings)
         {
-            this.settings = settings;
+            this.Settings = settings;
         }
 
         private AbstractSyllableGenerator()

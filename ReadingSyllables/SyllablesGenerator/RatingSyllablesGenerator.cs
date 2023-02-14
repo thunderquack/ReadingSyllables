@@ -10,7 +10,7 @@ namespace ReadingSyllables.SyllablesGenerator
 
         public override string GenerateSyllable()
         {
-            string syllable = Syllables.Keys.ElementAt(random.Next(0, settings.MaxRating - 1)).ToUpper();
+            string syllable = Syllables.Keys.ElementAt(random.Next(0, Settings.MaxRating - 1)).ToUpper();
             if (syllable == prevSyllable)
             {
                 return (GenerateSyllable());

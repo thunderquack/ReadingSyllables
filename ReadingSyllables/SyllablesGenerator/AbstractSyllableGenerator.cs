@@ -8,13 +8,15 @@
 
         public abstract string GenerateSyllable();
 
-        public AbstractSyllableGenerator(Settings settings)
-        {
-            this.Settings = settings;
-        }
-
         private AbstractSyllableGenerator()
         {
         }
+
+        public AbstractSyllableGenerator(Settings settings)
+        {
+            Settings = settings;
+        }
+
+        public abstract string GetShortSettings();
     }
 }

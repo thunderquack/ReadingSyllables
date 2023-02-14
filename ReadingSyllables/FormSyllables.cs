@@ -30,8 +30,14 @@ namespace ReadingSyllables
             }
         }
 
+        private void ShowSettingsInTitle()
+        {
+            Text = $"{syllable} - {syllablesGenerator.GetShortSettings()}";
+        }
+
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
-        {            
+        {
+            ShowSettingsInTitle();
             if (e.KeyCode == Keys.F12)
             {
                 return;

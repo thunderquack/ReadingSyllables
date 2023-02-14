@@ -56,5 +56,10 @@
                     return "";
             }
         }
+
+        public override string GetShortSettings()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,6 +22,11 @@ namespace ReadingSyllables.SyllablesGenerator
             }
         }
 
+        public override string GetShortSettings()
+        {
+            throw new NotImplementedException();
+        }
+
         public RatingSyllablesGenerator(Settings settings) : base(settings)
         {
             string json = File.ReadAllText(settings.FileName, Encoding.UTF8);

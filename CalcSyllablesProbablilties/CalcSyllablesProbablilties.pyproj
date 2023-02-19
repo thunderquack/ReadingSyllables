@@ -25,11 +25,13 @@
     <Compile Include="CalcSyllablesProbablilties.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Words\" />
     <Folder Include="Texts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Texts\idiot.txt" />
     <Content Include="Texts\warandpeace.txt" />
+    <Content Include="Words\RussianWords.txt" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

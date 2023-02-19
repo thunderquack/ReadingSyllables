@@ -4,6 +4,7 @@ from os.path import isfile, join
 from collections import Counter
 import json
 
+print('starting to process files')
 onlyfiles = [f for f in listdir("./Texts") if isfile(join("./Texts", f))]
 
 syllables_to_remove = ["князь", "княж"]
@@ -11,6 +12,7 @@ syllables_to_remove = ["князь", "княж"]
 u_syllables = Counter()
 for f in onlyfiles:
     file_name = join("./Texts", f)
+    print('file name', file_name)
     file_content = open(file_name, "r", encoding="utf-8")
     sx = rusyllab.split_words(file_content.read().lower().split())
     without_len_one = [x for x in sx if len(x) > 1]

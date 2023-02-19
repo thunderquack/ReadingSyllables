@@ -24,7 +24,7 @@ for ignore in syllables_to_remove:
 f = open("result.json", "w")
 f.write(
     json.dumps(
-        [{"name": key, "value": value} for key, value in u_syllables.most_common()]
+        [{"id":idx+1, "name": element[0], "value": element[1]} for idx, element in enumerate(u_syllables.most_common())]
     )
 )
 f.close()

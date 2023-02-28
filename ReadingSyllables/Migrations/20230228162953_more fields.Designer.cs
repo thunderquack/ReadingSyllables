@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadingSyllables.Models;
 
@@ -10,9 +11,11 @@ using ReadingSyllables.Models;
 namespace ReadingSyllables.Migrations
 {
     [DbContext(typeof(SyllablesContext))]
-    partial class SyllablesContextModelSnapshot : ModelSnapshot
+    [Migration("20230228162953_more fields")]
+    partial class morefields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
@@ -37,9 +40,6 @@ namespace ReadingSyllables.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Syllables");
                 });

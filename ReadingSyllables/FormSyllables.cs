@@ -126,13 +126,22 @@ namespace ReadingSyllables
 
             if (settings.Mode == ApplicationMode.Cards)
             {
+                string shownSyllable = labelSyllable.Text.ToLower();
                 // Bad
                 if (e.KeyCode == Keys.F8)
                 {
+                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
+                    s.Show = 0;
+                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    context.SaveChanges();
                 }
                 // Average
                 if (e.KeyCode == Keys.F9)
                 {
+                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
+                    s.Show++;
+                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    context.SaveChanges();
                 }
                 // Good
                 if (e.KeyCode == Keys.F10)

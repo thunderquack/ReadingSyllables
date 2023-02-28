@@ -19,7 +19,8 @@ namespace ReadingSyllables.SyllablesGenerator
         {
             var list = Context.Syllables.Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
             var idx = random.Next(list.Count());
-            return list.ElementAt(idx).Name;
+            list.ElementAt(idx).ShowCounter++;
+            return list.ElementAt(idx).Name.ToUpper();
         }
 
         public override string GetShortSettings()

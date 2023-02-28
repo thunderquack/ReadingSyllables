@@ -41,6 +41,7 @@ namespace ReadingSyllables.Models
                     Syllables.Add(s);
                 }
             }
+            SaveChanges();
         }
     }
 }

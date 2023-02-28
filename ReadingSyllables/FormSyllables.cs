@@ -86,6 +86,8 @@ namespace ReadingSyllables
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
         {
+            e.Handled = true;
+
             // Button Presses
 
             if (e.KeyCode == Keys.F11)

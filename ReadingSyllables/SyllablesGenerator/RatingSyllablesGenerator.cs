@@ -13,7 +13,7 @@ namespace ReadingSyllables.SyllablesGenerator
             string syllable = Syllables.Keys.ElementAt(random.Next(0, Settings.MaxRating)).ToUpper();
             if (syllable == prevSyllable)
             {
-                return (GenerateSyllable());
+                return GenerateSyllable();
             }
             else
             {

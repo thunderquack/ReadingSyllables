@@ -6,7 +6,6 @@ namespace ReadingSyllables.SyllablesGenerator
     internal class CardsSyllablesGenerator : AbstractSyllableGenerator
     {
         public int Size { get; set; } = 10;
-        private Random random = new Random();
         public SyllablesContext Context
         {
             get
@@ -17,9 +16,14 @@ namespace ReadingSyllables.SyllablesGenerator
 
         public override string GenerateSyllable()
         {
-            var list = Context.Syllables.Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
+            var list = Context.Syllables.OrderBy(x=>x.Id).Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
             var idx = random.Next(list.Count());
+            if (list.ElementAt(idx).Name == prevSyllable)
+            {
+                return GenerateSyllable();
+            }
             list.ElementAt(idx).ShowCounter++;
+            prevSyllable = list.ElementAt(idx).Name;
             return list.ElementAt(idx).Name.ToUpper();
         }
 

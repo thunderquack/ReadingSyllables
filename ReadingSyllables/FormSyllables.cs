@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using ReadingSyllables.Models;
 using ReadingSyllables.SyllablesGenerator;
+using System.Text;
 
 namespace ReadingSyllables
 {
@@ -12,6 +15,14 @@ namespace ReadingSyllables
         private string nextSyllable = "";
         private Settings settings;
         private AbstractSyllableGenerator syllablesGenerator;
+        private SyllablesContext context
+        {
+            get
+            {
+                return Program.host.Services.GetRequiredService<SyllablesContext>();
+            }
+        }
+
 
         internal SyllablesContext SyllablesContext
         {
@@ -38,7 +49,34 @@ namespace ReadingSyllables
                     syllablesGenerator = new RatingSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
+                case ApplicationMode.Cards:
+                    ImportCards();
+                    syllablesGenerator = new CardsSyllablesGenerator(settings);
+                    syllable = syllablesGenerator.GenerateSyllable();
+                    break;
             }
+        }
+
+        private void ImportCards()
+        {
+            string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
+            var sylls = JsonConvert.DeserializeObject(json);
+            foreach (JObject item in (sylls as JArray))
+            {
+                int rating = Convert.ToInt32(item.GetValue("value"));
+                string name = Convert.ToString(item.GetValue("name"));
+                var dbSyll = context.Syllables.FirstOrDefault(x => x.Name == name);
+                if (dbSyll == null)
+                {
+                    Syllable s = new()
+                    {
+                        Rating = rating,
+                        Name = name,
+                    };
+                    context.Syllables.Add(s);
+                }
+            }
+            context.SaveChanges();
         }
 
         private void ShowSettingsInTitle()

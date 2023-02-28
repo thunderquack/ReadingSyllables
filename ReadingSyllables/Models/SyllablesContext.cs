@@ -9,9 +9,8 @@ namespace ReadingSyllables.Models
 
         public SyllablesContext()
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = Path.Join(path, "syllables.db");
+            var folder = Directory.GetCurrentDirectory();
+            DbPath = Path.Join(folder, "syllables.db");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

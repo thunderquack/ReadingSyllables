@@ -21,7 +21,9 @@ namespace ReadingSyllables
             var builder = Host.CreateDefaultBuilder();
             builder.ConfigureServices(
                 services =>
-                    services.AddSingleton<SyllablesContext>());
+                    services.AddSingleton<SyllablesContext>()
+                        .AddSingleton(Settings.Load())
+                    );
             host = builder.Build();
             Application.Run(new FormSyllables());
         }

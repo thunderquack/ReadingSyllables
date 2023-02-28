@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ReadingSyllables.Models
 {
@@ -20,7 +24,23 @@ namespace ReadingSyllables.Models
 
         private void ImportSyllables()
         {
-
+            string json = File.ReadAllText(Program.host.Services.GetRequiredService<Settings>().FileName, Encoding.UTF8);
+            var sylls = JsonConvert.DeserializeObject(json);
+            foreach (JObject item in (sylls as JArray))
+            {
+                int rating = Convert.ToInt32(item.GetValue("value"));
+                string name = Convert.ToString(item.GetValue("name"));
+                var dbSyll = Syllables.FirstOrDefault(x => x.Name == name);
+                if (dbSyll == null)
+                {
+                    Syllable s = new()
+                    {
+                        Rating = rating,
+                        Name = name,
+                    };
+                    Syllables.Add(s);
+                }
+            }
         }
     }
 }

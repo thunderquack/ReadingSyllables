@@ -86,17 +86,20 @@ namespace ReadingSyllables
                 }
             }
 
-            // Bad
-            if (e.KeyCode == Keys.F8)
+            if (settings.Mode == ApplicationMode.Cards)
             {
-            }
-            // Average
-            if (e.KeyCode == Keys.F9)
-            {
-            }
-            // Good
-            if (e.KeyCode == Keys.F10)
-            {
+                // Bad
+                if (e.KeyCode == Keys.F8)
+                {
+                }
+                // Average
+                if (e.KeyCode == Keys.F9)
+                {
+                }
+                // Good
+                if (e.KeyCode == Keys.F10)
+                {
+                }
             }
 
             nextSyllable = syllablesGenerator.GenerateSyllable();

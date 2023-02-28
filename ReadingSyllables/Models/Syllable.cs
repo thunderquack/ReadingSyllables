@@ -2,5 +2,6 @@
 {
     internal class Syllable
     {
+        public int Id { get; set; }
     }
 }

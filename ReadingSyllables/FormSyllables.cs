@@ -146,6 +146,10 @@ namespace ReadingSyllables
                 // Good
                 if (e.KeyCode == Keys.F10)
                 {
+                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
+                    s.Show++;
+                    s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
+                    context.SaveChanges();
                 }
             }
 

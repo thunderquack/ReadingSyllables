@@ -11,6 +11,7 @@ namespace ReadingSyllables.Models
         {
             var folder = Directory.GetCurrentDirectory();
             DbPath = Path.Join(folder, "syllables.db");
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

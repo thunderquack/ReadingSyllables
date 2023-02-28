@@ -1,4 +1,6 @@
-﻿using ReadingSyllables.SyllablesGenerator;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReadingSyllables.Models;
+using ReadingSyllables.SyllablesGenerator;
 
 namespace ReadingSyllables
 {
@@ -10,6 +12,14 @@ namespace ReadingSyllables
         private string nextSyllable = "";
         private Settings settings;
         private AbstractSyllableGenerator syllablesGenerator;
+
+        internal SyllablesContext SyllablesContext
+        {
+            get
+            {
+                return Program.host.Services.GetRequiredService<SyllablesContext>();
+            }
+        }
 
         public FormSyllables()
         {
@@ -23,6 +33,7 @@ namespace ReadingSyllables
                     (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
+
                 case ApplicationMode.Rating:
                     syllablesGenerator = new RatingSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
@@ -37,6 +48,8 @@ namespace ReadingSyllables
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
         {
+            // Button Presses
+
             if (e.KeyCode == Keys.F11)
             {
                 switch (settings.Mode)
@@ -44,6 +57,7 @@ namespace ReadingSyllables
                     case ApplicationMode.Random:
                     default:
                         return;
+
                     case ApplicationMode.Rating:
                         if (syllablesGenerator.Settings.MaxRating > 2)
                         {
@@ -53,6 +67,7 @@ namespace ReadingSyllables
                         return;
                 }
             }
+
             if (e.KeyCode == Keys.F12)
             {
                 switch (settings.Mode)
@@ -60,6 +75,7 @@ namespace ReadingSyllables
                     case ApplicationMode.Random:
                     default:
                         return;
+
                     case ApplicationMode.Rating:
                         if (syllablesGenerator.Settings.MaxRating < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
                         {
@@ -69,6 +85,20 @@ namespace ReadingSyllables
                         return;
                 }
             }
+
+            // Bad
+            if (e.KeyCode == Keys.F8)
+            {
+            }
+            // Average
+            if (e.KeyCode == Keys.F9)
+            {
+            }
+            // Good
+            if (e.KeyCode == Keys.F10)
+            {
+            }
+
             nextSyllable = syllablesGenerator.GenerateSyllable();
             labelSyllable.Text = syllable;
             syllable = nextSyllable;
@@ -119,6 +149,5 @@ namespace ReadingSyllables
         {
             sizeWasChanged = true;
         }
-
     }
 }

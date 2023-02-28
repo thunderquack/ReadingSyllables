@@ -12,9 +12,15 @@ namespace ReadingSyllables.Models
             var folder = Directory.GetCurrentDirectory();
             DbPath = Path.Join(folder, "syllables.db");
             Database.Migrate();
+            ImportSyllables();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
+
+        private void ImportSyllables()
+        {
+
+        }
     }
 }

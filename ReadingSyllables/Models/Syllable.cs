@@ -10,5 +10,6 @@ namespace ReadingSyllables.Models
         public string Name { get; set; }
         public DateTime NextShow { get; set; } = DateTime.UtcNow;
         public int Show { get; set; } = 0;
+        public int ShowCounter { get; set; } = 0;
     }
 }

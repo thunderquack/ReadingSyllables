@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f56acea-541e-4bf5-b1d5-95057f58e2b3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MakeWordList.py</StartupFile>
+    <StartupFile>CollectWords.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CalcSyllablesFrequencies.py" />
+    <Compile Include="CollectWords.py" />
     <Compile Include="MakeWordList.py">
       <SubType>Code</SubType>
     </Compile>

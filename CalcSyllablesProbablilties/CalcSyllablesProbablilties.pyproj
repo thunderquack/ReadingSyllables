@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CalcSyllablesProbablilties.py" />
+    <Compile Include="CalcSyllablesFrequencies.py" />
     <Compile Include="MakeWordList.py">
       <SubType>Code</SubType>
     </Compile>

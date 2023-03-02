@@ -4,6 +4,14 @@ from os.path import isfile, join
 from tqdm import tqdm
 import rusyllab  # https://github.com/Koziev/rusyllab
 import json
+import regex
+
+def only_russian_letters(name):
+    res = regex.search(r"^\p{IsCyrillic}*$", name)
+    if res:
+        return res.string
+    else:
+        return ''
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -21,10 +29,12 @@ for f in onlyfiles:
     print("number of words:", len(words))
     i = 0
     for w in tqdm(words):
-        res = morph.parse(w)[0]
-        if res.tag.POS == "NOUN":
-            words_set.add(res.normal_form)
-            i += 1
+        word = only_russian_letters(w)
+        if len(word) > 1:
+            res = morph.parse(word)[0]
+            if res.tag.POS == "NOUN":
+                words_set.add(res.normal_form)
+                i += 1
 
     print("file processed, words added:", i)
 

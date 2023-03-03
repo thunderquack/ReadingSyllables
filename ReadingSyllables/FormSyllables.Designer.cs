@@ -28,31 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelSyllable = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            labelSyllable = new Label();
+            SuspendLayout();
             // 
             // labelSyllable
             // 
-            this.labelSyllable.Location = new System.Drawing.Point(0, 0);
-            this.labelSyllable.Name = "labelSyllable";
-            this.labelSyllable.Size = new System.Drawing.Size(41, 15);
-            this.labelSyllable.TabIndex = 0;
-            this.labelSyllable.Text = "Слог";
-            this.labelSyllable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            labelSyllable.Dock = DockStyle.Fill;
+            labelSyllable.Location = new Point(0, 0);
+            labelSyllable.Margin = new Padding(0);
+            labelSyllable.Name = "labelSyllable";
+            labelSyllable.Size = new Size(1143, 750);
+            labelSyllable.TabIndex = 0;
+            labelSyllable.Text = "СЛОГ";
+            labelSyllable.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // FormSyllables
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.labelSyllable);
-            this.Name = "FormSyllables";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Слоги";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSyllables_KeyDown);
-            this.Resize += new System.EventHandler(this.FormSyllables_Resize);
-            this.ResumeLayout(false);
-
+            AutoScaleMode = AutoScaleMode.None;
+            ClientSize = new Size(1143, 750);
+            Controls.Add(labelSyllable);
+            Margin = new Padding(4, 5, 4, 5);
+            Name = "FormSyllables";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Слоги";
+            KeyDown += FormSyllables_KeyDown;
+            ResumeLayout(false);
         }
 
         #endregion

@@ -22,11 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CalcSyllablesFrequencies.py" />
     <Compile Include="CollectWords.py" />
-    <Compile Include="CreateSyllablesFromNouns.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Texts\" />

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReadingSyllables.Models;
+using ReadingSyllables.Services;
 
 namespace ReadingSyllables
 {
@@ -23,6 +24,7 @@ namespace ReadingSyllables
                 services =>
                     services.AddSingleton<SyllablesContext>()
                         .AddSingleton(Settings.Load())
+                        .AddSingleton(new TitleService())
                     );
             host = builder.Build();
             Application.Run(new FormSyllables());

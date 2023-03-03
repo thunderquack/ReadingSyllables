@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using ReadingSyllables.Models;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
+using ReadingSyllables.Services;
 
 namespace ReadingSyllables
 {
@@ -23,12 +24,11 @@ namespace ReadingSyllables
             }
         }
 
-
-        internal SyllablesContext SyllablesContext
+        private TitleService title
         {
             get
             {
-                return Program.host.Services.GetRequiredService<SyllablesContext>();
+                return Program.host.Services.GetRequiredService<TitleService>();
             }
         }
 
@@ -36,6 +36,7 @@ namespace ReadingSyllables
         {
             InitializeComponent();
             settings = Settings.Load();
+            title.SetRequiredForm(this);
             switch (settings.Mode)
             {
                 case ApplicationMode.Random:
@@ -135,6 +136,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show = 0;
                     s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    _ = title.SetTitle($"Bad - {s.NextShow}");
                     context.SaveChanges();
                 }
                 // Average
@@ -143,6 +145,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show++;
                     s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    _ = title.SetTitle($"Average - {s.NextShow}");
                     context.SaveChanges();
                 }
                 // Good
@@ -151,6 +154,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show++;
                     s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
+                    _ = title.SetTitle($"Good - {s.NextShow}");
                     context.SaveChanges();
                 }
             }
@@ -204,6 +208,11 @@ namespace ReadingSyllables
         private void FormSyllables_Resize(object sender, EventArgs e)
         {
             sizeWasChanged = true;
+        }
+
+        internal void SetTitle(string title)
+        {
+            Text = title;
         }
     }
 }

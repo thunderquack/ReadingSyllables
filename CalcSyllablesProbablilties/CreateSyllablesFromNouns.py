@@ -12,7 +12,7 @@ sx = rusyllab.split_words(words.keys())
 without_len_one = [x for x in sx if len(x) > 1]
 u_syllables = Counter(without_len_one)
 
-f = open("result.json", "w", encoding="utf-8")
+f = open("syllables_rating.json", "w", encoding="utf-8")
 f.write(
     json.dumps(
         [{"id":idx+1, "name": element[0], "value": element[1]} for idx, element in enumerate(u_syllables.most_common())],

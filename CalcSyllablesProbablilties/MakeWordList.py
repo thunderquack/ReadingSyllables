@@ -23,7 +23,7 @@ for word in words:
         words_list[word] = rating
 words_list = sorted(words_list.items(), key=lambda item: item[1])
 
-words_file_name = "./rating.json"
+words_file_name = "./syllables_rating.json"
 words = open(words_file_name, "w", encoding="utf-8")
 json.dump(words_list, words)
 

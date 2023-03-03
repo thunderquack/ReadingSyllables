@@ -21,7 +21,7 @@ for f in onlyfiles:
 for ignore in syllables_to_remove:
     del u_syllables[ignore]
 
-f = open("result.json", "w")
+f = open("syllables_rating.json", "w")
 f.write(
     json.dumps(
         [{"id":idx+1, "name": element[0], "value": element[1]} for idx, element in enumerate(u_syllables.most_common())]

@@ -39,7 +39,7 @@ for f in onlyfiles:
     print("file processed, words added:", i)
 
 words_list = {}
-syllables_file_name = "./result.json"
+syllables_file_name = "./syllables_rating.json"
 syllables = json.load(open(syllables_file_name, "r", encoding="utf-8"))
 for w in tqdm(words_set):
     sx = rusyllab.split_word(w)

@@ -4,5 +4,6 @@
     {
         Random = 0,
         Rating = 1,
+        Cards = 2,
     }
 }

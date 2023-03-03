@@ -7,7 +7,8 @@ import json
 print('starting to process files')
 onlyfiles = [f for f in listdir("./Texts") if isfile(join("./Texts", f))]
 
-syllables_to_remove = ["князь", "княж"]
+# just for the case
+syllables_to_remove = []
 
 u_syllables = Counter()
 for f in onlyfiles:
@@ -21,10 +22,11 @@ for f in onlyfiles:
 for ignore in syllables_to_remove:
     del u_syllables[ignore]
 
-f = open("syllables_rating.json", "w")
+f = open("syllables_rating.json", "w", encoding="utf-8")
 f.write(
     json.dumps(
-        [{"id":idx+1, "name": element[0], "value": element[1]} for idx, element in enumerate(u_syllables.most_common())]
+        [{"id":idx+1, "name": element[0], "value": element[1]} for idx, element in enumerate(u_syllables.most_common())],
+        ensure_ascii=False
     )
 )
 f.close()

@@ -172,7 +172,6 @@ namespace ReadingSyllables
             Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
             int height = this.Height - titleHeight;
-            SizeF sz = graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
             Font font = new Font(labelSyllable.Font.FontFamily, height, labelSyllable.Font.Style);
             int minFontSize = 8;
             SizeF size = graphics.MeasureString(labelSyllable.Text, font);

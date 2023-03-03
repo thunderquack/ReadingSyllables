@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Text;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ReadingSyllables.Models
 {

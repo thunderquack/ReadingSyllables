@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReadingSyllables.Models;
+using ReadingSyllables.Services;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
-using ReadingSyllables.Services;
 
 namespace ReadingSyllables
 {
@@ -16,6 +16,7 @@ namespace ReadingSyllables
         private string nextSyllable = "";
         private Settings settings;
         private AbstractSyllableGenerator syllablesGenerator;
+
         private SyllablesContext context
         {
             get
@@ -50,6 +51,7 @@ namespace ReadingSyllables
                     syllablesGenerator = new RatingSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
+
                 case ApplicationMode.Cards:
                     ImportCards();
                     syllablesGenerator = new CardsSyllablesGenerator(settings);

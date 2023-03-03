@@ -1,8 +1,12 @@
-﻿namespace ReadingSyllables.Services
+﻿using Microsoft.Extensions.Hosting;
+
+namespace ReadingSyllables.Services
 {
     internal class TitleService
     {
+#pragma warning disable CS8618
         private FormSyllables requiredForm;
+#pragma warning restore CS8618
 
         internal void SetRequiredForm(FormSyllables requiredForm)
         {

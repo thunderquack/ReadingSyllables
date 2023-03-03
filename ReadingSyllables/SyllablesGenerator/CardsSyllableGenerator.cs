@@ -6,17 +6,18 @@ namespace ReadingSyllables.SyllablesGenerator
     internal class CardsSyllablesGenerator : AbstractSyllableGenerator
     {
         public int Size { get; set; } = 10;
+
         public SyllablesContext Context
         {
             get
             {
-                return Program.host.Services.GetRequiredService<SyllablesContext>();   
+                return Program.host.Services.GetRequiredService<SyllablesContext>();
             }
         }
 
         public override string GenerateSyllable()
         {
-            var list = Context.Syllables.OrderBy(x=>x.Id).Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
+            var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
             var idx = random.Next(list.Count());
             if (list.ElementAt(idx).Name == prevSyllable)
             {
@@ -32,7 +33,8 @@ namespace ReadingSyllables.SyllablesGenerator
             return $"Card - Size: {Size}";
         }
 
-        public CardsSyllablesGenerator(Settings settings) : base(settings) { }
-
+        public CardsSyllablesGenerator(Settings settings) : base(settings)
+        {
+        }
     }
 }

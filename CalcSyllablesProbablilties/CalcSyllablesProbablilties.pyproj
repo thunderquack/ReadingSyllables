@@ -36,8 +36,13 @@
     <Folder Include="Texts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Texts\idiot.txt" />
-    <Content Include="Texts\warandpeace.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#1]_Garri_Potter_i_Filosofskiy_kamen.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#2]_Garri_Potter_i_Taynaya_komnata.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#3]_Garri_Potter_i_Uznik_Azkabana.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#4]_Garri_Potter_i_Kubok_ognya.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#5]_Garri_Potter_i_Orden_Feniksa.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#6]_Garri_Potter_i_Prints-Polukrovka.txt" />
+    <Content Include="Texts\Rouling_Djoann_[Garri_Potter#7]_Garri_Potter_i_Daryi_Smerti.txt" />
     <Content Include="Words\RussianWords.txt" />
   </ItemGroup>
   <ItemGroup>

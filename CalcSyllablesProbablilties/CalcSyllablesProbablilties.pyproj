@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f56acea-541e-4bf5-b1d5-95057f58e2b3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>CalcSyllablesFrequencies.py</StartupFile>
+    <StartupFile>CreateSyllablesFromNouns.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,12 +27,8 @@
     <Compile Include="CreateSyllablesFromNouns.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MakeWordList.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Words\" />
     <Folder Include="Texts\" />
   </ItemGroup>
   <ItemGroup>
@@ -43,7 +39,6 @@
     <Content Include="Texts\Rouling_Djoann_[Garri_Potter#5]_Garri_Potter_i_Orden_Feniksa.txt" />
     <Content Include="Texts\Rouling_Djoann_[Garri_Potter#6]_Garri_Potter_i_Prints-Polukrovka.txt" />
     <Content Include="Texts\Rouling_Djoann_[Garri_Potter#7]_Garri_Potter_i_Daryi_Smerti.txt" />
-    <Content Include="Words\RussianWords.txt" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

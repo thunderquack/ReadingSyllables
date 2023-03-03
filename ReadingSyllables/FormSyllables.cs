@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReadingSyllables.Models;
+using ReadingSyllables.Services;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
 
@@ -15,6 +16,7 @@ namespace ReadingSyllables
         private string nextSyllable = "";
         private Settings settings;
         private AbstractSyllableGenerator syllablesGenerator;
+
         private SyllablesContext context
         {
             get
@@ -23,12 +25,11 @@ namespace ReadingSyllables
             }
         }
 
-
-        internal SyllablesContext SyllablesContext
+        private TitleService title
         {
             get
             {
-                return Program.host.Services.GetRequiredService<SyllablesContext>();
+                return Program.host.Services.GetRequiredService<TitleService>();
             }
         }
 
@@ -36,6 +37,7 @@ namespace ReadingSyllables
         {
             InitializeComponent();
             settings = Settings.Load();
+            title.SetRequiredForm(this);
             switch (settings.Mode)
             {
                 case ApplicationMode.Random:
@@ -49,6 +51,7 @@ namespace ReadingSyllables
                     syllablesGenerator = new RatingSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
+
                 case ApplicationMode.Cards:
                     ImportCards();
                     syllablesGenerator = new CardsSyllablesGenerator(settings);
@@ -135,6 +138,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show = 0;
                     s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    _ = title.SetTitle($"Bad - {s.NextShow}");
                     context.SaveChanges();
                 }
                 // Average
@@ -143,6 +147,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show++;
                     s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                    _ = title.SetTitle($"Average - {s.NextShow}");
                     context.SaveChanges();
                 }
                 // Good
@@ -151,6 +156,7 @@ namespace ReadingSyllables
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
                     s.Show++;
                     s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
+                    _ = title.SetTitle($"Good - {s.NextShow}");
                     context.SaveChanges();
                 }
             }
@@ -204,6 +210,11 @@ namespace ReadingSyllables
         private void FormSyllables_Resize(object sender, EventArgs e)
         {
             sizeWasChanged = true;
+        }
+
+        internal void SetTitle(string title)
+        {
+            Text = title;
         }
     }
 }

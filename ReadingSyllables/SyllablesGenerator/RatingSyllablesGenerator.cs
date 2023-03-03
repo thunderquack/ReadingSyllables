@@ -6,7 +6,7 @@ namespace ReadingSyllables.SyllablesGenerator
 {
     internal class RatingSyllablesGenerator : AbstractSyllableGenerator
     {
-        Dictionary<string, int> Syllables = new Dictionary<string, int>();
+        private Dictionary<string, int> Syllables = new Dictionary<string, int>();
 
         public override string GenerateSyllable()
         {
@@ -26,6 +26,7 @@ namespace ReadingSyllables.SyllablesGenerator
         {
             return $"Rating - Maximum rating: {Settings.MaxRating}";
         }
+
         public int GetLength()
         {
             return Syllables.Count;

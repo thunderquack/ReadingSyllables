@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadingSyllables", "Reading
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CalcSyllablesProbablilties", "CalcSyllablesProbablilties\CalcSyllablesProbablilties.pyproj", "{4F56ACEA-541E-4BF5-B1D5-95057F58E2B3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D2E008F-F3D9-440E-8310-5668D458F6A0}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

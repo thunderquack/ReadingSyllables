@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4f56acea-541e-4bf5-b1d5-95057f58e2b3</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>CreateSyllablesFromNouns.py</StartupFile>
+    <StartupFile>CollectWords.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

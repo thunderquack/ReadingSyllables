@@ -10,8 +10,6 @@ namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
-        private bool sizeWasChanged = true;
-
         private string syllable = "";
         private string nextSyllable = "";
         private Settings settings;
@@ -165,51 +163,34 @@ namespace ReadingSyllables
             labelSyllable.Text = syllable;
             syllable = nextSyllable;
             ShowSettingsInTitle();
-            Graphics g = Graphics.FromHwndInternal(this.Handle);
-
-            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
-            int titleHeight = screenRectangle.Top - this.Top;
-
-            int height = this.Height - titleHeight;
-
-            SizeF sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
-
-            labelSyllable.Size = new Size(this.Width, this.Height);
-
-            if (sizeWasChanged)
-            {
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, height / 4, labelSyllable.Font.Style);
-                sizeWasChanged = false;
-            }
-
-            while (sz.Width < this.Width)
-            {
-                sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
-            }
-
-            while (sz.Height < this.Height - titleHeight)
-            {
-                sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size + 1f, labelSyllable.Font.Style);
-            }
-
-            while (sz.Width > this.Width)
-            {
-                sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
-            }
-
-            while (sz.Height > this.Height - titleHeight)
-            {
-                sz = g.MeasureString(labelSyllable.Text, labelSyllable.Font);
-                labelSyllable.Font = new Font(labelSyllable.Font.FontFamily, labelSyllable.Font.Size - 1f, labelSyllable.Font.Style);
-            }
+            ResizeLabel();
         }
 
-        private void FormSyllables_Resize(object sender, EventArgs e)
+        private void ResizeLabel()
         {
-            sizeWasChanged = true;
+            Graphics graphics = labelSyllable.CreateGraphics();
+            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
+            int titleHeight = screenRectangle.Top - this.Top;
+            int height = this.Height - titleHeight;
+            SizeF sz = graphics.MeasureString(labelSyllable.Text, labelSyllable.Font);
+            Font font = new Font(labelSyllable.Font.FontFamily, height, labelSyllable.Font.Style);
+            int minFontSize = 8;
+            SizeF size = graphics.MeasureString(labelSyllable.Text, font);
+            float fontSize = font.Size;
+            while (size.Width > labelSyllable.Width - 100 || size.Height > labelSyllable.Height)
+            {
+                fontSize--;
+                if (fontSize < minFontSize)
+                {
+                    fontSize = minFontSize;
+                    font = new Font(font.FontFamily, fontSize, font.Style);
+                    break;
+                }
+                font = new Font(font.FontFamily, fontSize, font.Style);
+                size = graphics.MeasureString(labelSyllable.Text, font);
+            }
+            labelSyllable.Font = font;
+            graphics.Dispose();
         }
 
         internal void SetTitle(string title)

@@ -55,7 +55,7 @@ for w in tqdm(words_set):
             res = element["id"]
     words_list[w] = res
 words_list = dict(sorted(words_list.items(), key=lambda item: item[1]))
-words_file_name = "./rating.json"
+words_file_name = "./words_rating.json"
 words = open(words_file_name, "w", encoding="utf-8")
 json.dump(words_list, words, ensure_ascii=False)
 

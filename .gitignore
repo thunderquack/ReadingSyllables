@@ -332,3 +332,7 @@ ASALocalRun/
 /src/m2trust.SelfServiceApp.Linux.Client/*.zip
 /CalcSyllablesProbablilties/env
 /CalcSyllablesProbablilties/result.json
+/CalcSyllablesProbablilties/Texts
+/CalcSyllablesProbablilties/syllables.db
+/CalcSyllablesProbablilties/syllables.db-shm
+/CalcSyllablesProbablilties/syllables.db-wal

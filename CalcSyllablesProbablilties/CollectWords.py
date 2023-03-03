@@ -5,13 +5,16 @@ from tqdm import tqdm
 import rusyllab  # https://github.com/Koziev/rusyllab
 import json
 import regex
+from collections import Counter
+
 
 def only_russian_letters(name):
     res = regex.search(r"^\p{IsCyrillic}*$", name)
     if res:
         return res.string
     else:
-        return ''
+        return ""
+
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -35,9 +38,25 @@ for f in onlyfiles:
             if res.tag.POS == "NOUN":
                 words_set.add(res.normal_form)
                 i += 1
-
     print("file processed, words added:", i)
 
+print("saving syllables..")
+sx = rusyllab.split_words(words_set)
+without_len_one = [x for x in sx if len(x) > 1]
+u_syllables = Counter(without_len_one)
+f = open("syllables_rating.json", "w", encoding="utf-8")
+f.write(
+    json.dumps(
+        [
+            {"id": idx + 1, "name": element[0], "value": element[1]}
+            for idx, element in enumerate(u_syllables.most_common())
+        ],
+        ensure_ascii=False,
+    )
+)
+f.close()
+
+print("saving words..")
 words_list = {}
 syllables_file_name = "./syllables_rating.json"
 syllables = json.load(open(syllables_file_name, "r", encoding="utf-8"))

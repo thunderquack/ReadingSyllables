@@ -12,7 +12,7 @@ namespace ReadingSyllables.Statistics
 
         public void ShowStatisticsForm()
         {
-            var topTenSyllables = syllablesContext.Syllables.OrderBy(x => x.Show).Take(10).ToList();
+            var topTenSyllables = syllablesContext.Syllables.OrderByDescending(x => x.Show).Take(10).ToList();
             string topTen = "";
             foreach (var syllable in topTenSyllables)
             {

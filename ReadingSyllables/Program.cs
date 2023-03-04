@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReadingSyllables.Models;
 using ReadingSyllables.Services;
+using ReadingSyllables.Statistics;
 
 namespace ReadingSyllables
 {
@@ -24,6 +25,7 @@ namespace ReadingSyllables
                     services.AddSingleton<SyllablesContext>()
                         .AddSingleton(Settings.Load())
                         .AddSingleton(new TitleService())
+                        .AddSingleton<StatisticsCalculator>()
                     );
             host = builder.Build();
             Application.Run(new FormSyllables());

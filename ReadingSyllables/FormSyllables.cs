@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReadingSyllables.Models;
 using ReadingSyllables.Services;
+using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
 
@@ -90,6 +91,11 @@ namespace ReadingSyllables
             e.Handled = true;
 
             // Button Presses
+
+            if (e.KeyCode == Keys.F5) {
+                Program.host.Services.GetRequiredService<StatisticsCalculator>().ShowStatisticsForm();
+                return;
+            }
 
             if (e.KeyCode == Keys.F11)
             {

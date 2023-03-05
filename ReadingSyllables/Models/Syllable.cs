@@ -14,7 +14,7 @@ namespace ReadingSyllables.Models
 
         public override string? ToString()
         {
-            return $"{Name} - {NextShow}";
+            return $"{Name} - {NextShow.ToLocalTime()}";
         }
     }
 }

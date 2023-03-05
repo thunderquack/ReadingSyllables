@@ -18,7 +18,7 @@ namespace ReadingSyllables.Statistics
             {
                 topTen += $"{syllable.Name}: {syllable.Show}, {syllable.NextShow.ToLocalTime()}{Environment.NewLine}";
             }
-            MessageBox.Show(topTen);
+            MessageBox.Show(topTen, "Статистика");
         }
     }
 }

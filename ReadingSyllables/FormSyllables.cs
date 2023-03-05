@@ -136,6 +136,7 @@ namespace ReadingSyllables
             if (settings.Mode == ApplicationMode.Cards)
             {
                 string shownSyllable = labelSyllable.Text.ToLower();
+
                 // Bad
                 if (e.KeyCode == Keys.F8)
                 {
@@ -145,6 +146,7 @@ namespace ReadingSyllables
                     _ = title.SetTitle($"Bad - {s.NextShow}");
                     context.SaveChanges();
                 }
+
                 // Average
                 if (e.KeyCode == Keys.F9)
                 {
@@ -154,6 +156,7 @@ namespace ReadingSyllables
                     _ = title.SetTitle($"Average - {s.NextShow}");
                     context.SaveChanges();
                 }
+
                 // Good
                 if (e.KeyCode == Keys.F10)
                 {

@@ -53,10 +53,16 @@ namespace ReadingSyllables
 
                 case ApplicationMode.Cards:
                     ImportCards();
+                    ImportWords();
                     syllablesGenerator = new CardsSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
             }
+        }
+
+        private void ImportWords()
+        {
+            string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
         }
 
         private void ImportCards()

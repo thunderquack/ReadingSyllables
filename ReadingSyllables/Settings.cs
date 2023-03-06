@@ -16,6 +16,9 @@ namespace ReadingSyllables
         [JsonProperty("max_rating")]
         public int MaxRating { get; set; } = 10;
 
+        [JsonProperty("words_list")]
+        public string WordsList { get; set; }
+
         public static Settings Load()
         {
             return JsonConvert.DeserializeObject(File.ReadAllText(SETTINGS_FILE_NAME), typeof(Settings)) as Settings;

@@ -6,6 +6,7 @@ namespace ReadingSyllables.Models
     {
         public string DbPath { get; }
         public DbSet<Syllable> Syllables { get; set; }
+        public DbSet<Syllable> Words { get; set; }
 
         public SyllablesContext()
         {

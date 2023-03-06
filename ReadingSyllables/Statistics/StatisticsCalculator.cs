@@ -20,7 +20,5 @@ namespace ReadingSyllables.Statistics
             }
             MessageBox.Show(topTen, "Статистика");
         }
-        //a
-        //b
     }
 }

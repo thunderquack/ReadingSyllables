@@ -1,20 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ReadingSyllables.Models;
-
-namespace ReadingSyllables.SyllablesGenerator
+﻿namespace ReadingSyllables.SyllablesGenerator
 {
-    internal class CardsSyllablesGenerator : AbstractSyllableGenerator
+    internal class CardsSyllablesGenerator : AbstractGenerator
     {
-        public int Size { get; set; } = 10;
-
-        public SyllablesContext Context
-        {
-            get
-            {
-                return Program.host.Services.GetRequiredService<SyllablesContext>();
-            }
-        }
-
         public override string GenerateSyllable()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();

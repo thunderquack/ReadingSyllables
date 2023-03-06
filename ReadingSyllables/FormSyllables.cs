@@ -14,7 +14,7 @@ namespace ReadingSyllables
         private string syllable = "";
         private string nextSyllable = "";
         private Settings settings;
-        private AbstractSyllableGenerator syllablesGenerator;
+        private AbstractGenerator syllablesGenerator;
 
         private SyllablesContext context
         {
@@ -42,7 +42,7 @@ namespace ReadingSyllables
                 case ApplicationMode.Random:
                 default:
                     syllablesGenerator = new RandomSyllablesGenerator(settings);
-                    (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
+                    syllablesGenerator.Size = 2;
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
 
@@ -153,9 +153,9 @@ namespace ReadingSyllables
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.MaxRating > 2)
+                        if (syllablesGenerator.Settings.Size > 2)
                         {
-                            syllablesGenerator.Settings.MaxRating--;
+                            syllablesGenerator.Settings.Size--;
                             ShowSettingsInTitle();
                         }
                         return;
@@ -171,9 +171,9 @@ namespace ReadingSyllables
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.MaxRating < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
+                        if (syllablesGenerator.Settings.Size < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
                         {
-                            syllablesGenerator.Settings.MaxRating++;
+                            syllablesGenerator.Settings.Size++;
                             ShowSettingsInTitle();
                         }
                         return;

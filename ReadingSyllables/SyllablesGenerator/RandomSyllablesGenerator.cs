@@ -1,6 +1,6 @@
 ﻿namespace ReadingSyllables.SyllablesGenerator
 {
-    internal class RandomSyllablesGenerator : AbstractSyllableGenerator
+    internal class RandomSyllablesGenerator : AbstractGenerator
     {
         private List<char> CONSONANTS = new List<char>() {
             'б', 'в', 'г', 'д', 'ж', 'з', 'й', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х', 'ц', 'ч', 'ш', 'щ'
@@ -10,20 +10,13 @@
             'а', 'е', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'
         };
 
-        public int Length { get; private set; }
-
-        public void SetLength(int length)
-        {
-            Length = length;
-        }
-
         public RandomSyllablesGenerator(Settings settings) : base(settings)
         {
         }
 
         public override string GenerateSyllable()
         {
-            switch (Length)
+            switch (Size)
             {
                 case 2:
                     int idx = random.Next(0, VOVELS.Count - 1);
@@ -59,7 +52,7 @@
 
         public override string GetShortSettings()
         {
-            return $"Random - Length: {Length}";
+            return $"Random - Length: {Size}";
         }
     }
 }

@@ -13,8 +13,8 @@ namespace ReadingSyllables
         [JsonProperty("file_name")]
         public string FileName { get; set; }
 
-        [JsonProperty("max_rating")]
-        public int MaxRating { get; set; } = 10;
+        [JsonProperty("size")]
+        public int Size { get; set; } = 10;
 
         [JsonProperty("words_list")]
         public string WordsList { get; set; }

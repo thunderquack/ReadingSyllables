@@ -1,6 +1,6 @@
 ﻿namespace ReadingSyllables.SyllablesGenerator
 {
-    internal class CardsSyllablesGenerator : AbstractGenerator
+    internal class CardSyllablesGenerator : AbstractGenerator
     {
         public override string GenerateSyllable()
         {
@@ -20,7 +20,7 @@
             return $"Card - Size: {Size}";
         }
 
-        public CardsSyllablesGenerator(Settings settings) : base(settings)
+        public CardSyllablesGenerator(Settings settings) : base(settings)
         {
         }
     }

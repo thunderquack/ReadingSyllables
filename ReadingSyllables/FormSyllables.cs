@@ -54,7 +54,7 @@ namespace ReadingSyllables
                 case ApplicationMode.Cards:
                     ImportCards();
                     ImportWords();
-                    syllablesGenerator = new CardsSyllablesGenerator(settings);
+                    syllablesGenerator = new CardSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
             }

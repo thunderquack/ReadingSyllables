@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
-		CalcSyllablesProbablilties\structured_words.json = CalcSyllablesProbablilties\structured_words.json
 		CalcSyllablesProbablilties\syllables_rating.json = CalcSyllablesProbablilties\syllables_rating.json
 		CalcSyllablesProbablilties\words_rating.json = CalcSyllablesProbablilties\words_rating.json
 	EndProjectSection

@@ -5,6 +5,7 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ReadingSyllables
@@ -63,7 +64,52 @@ namespace ReadingSyllables
         private void ImportWords()
         {
             string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
+            var words = JsonConvert.DeserializeObject(json);
+            Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
+            foreach (JToken word in (words as JObject).Children().ToList())
+            {
+                string key = word.Path.ToLower();
+                List<string> values = new List<string>();
+                foreach (var val in word.Values().ToList())
+                {
+                    values.Add(val.ToString().ToLower());
+                }
+                loadedWords.Add(key, values);
+            }
+            var dbWordsList = context.Words.ToList();
+            foreach (var word in dbWordsList)
+            {
+                if (!loadedWords.ContainsKey(word.Name))
+                {
+                    context.Words.Remove(word);
+                }
+            }
+            dbWordsList = context.Words.ToList();
+            foreach (var word in loadedWords)
+            {
+                Word? dbWord = dbWordsList.FirstOrDefault(x => x.Name == word.Key);
+                if (dbWord == null)
+                {
+                    dbWord = new Word()
+                    {
+                        Name = word.Key,
+                    };
+                    context.Words.Add(dbWord);
+                };
+                dbWord.Syllables = new();
+                foreach (var syllable in word.Value)
+                {
+                    Syllable? dbSyllable = context.Syllables.First(x => x.Name == syllable);
+                    if (dbSyllable != null)
+                    {
+                        dbWord.Syllables.Add(dbSyllable);
+                    }
+                }
+            }
+            context.SaveChanges();
         }
+
+
 
         private void ImportCards()
         {

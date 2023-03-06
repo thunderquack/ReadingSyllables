@@ -2,5 +2,5 @@
   "mode": 2,
   "file_name": "syllables_rating.json",
   "max_rating": 10,
-  "words_list":  "structured_words.json"
+  "words_list": "structured_words.json"
 }

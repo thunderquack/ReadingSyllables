@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-
-namespace ReadingSyllables.Services
+﻿namespace ReadingSyllables.Services
 {
     internal class TitleService
     {

@@ -5,7 +5,6 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ReadingSyllables
@@ -109,8 +108,6 @@ namespace ReadingSyllables
             context.SaveChanges();
         }
 
-
-
         private void ImportCards()
         {
             string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
@@ -144,7 +141,8 @@ namespace ReadingSyllables
 
             // Button Presses
 
-            if (e.KeyCode == Keys.F5) {
+            if (e.KeyCode == Keys.F5)
+            {
                 Program.host.Services.GetRequiredService<StatisticsCalculator>().ShowStatisticsForm();
                 return;
             }

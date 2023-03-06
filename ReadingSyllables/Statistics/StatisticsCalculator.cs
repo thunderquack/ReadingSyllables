@@ -5,6 +5,7 @@ namespace ReadingSyllables.Statistics
     internal class StatisticsCalculator
     {
         private SyllablesContext syllablesContext;
+
         public StatisticsCalculator(SyllablesContext syllablesContext)
         {
             this.syllablesContext = syllablesContext;

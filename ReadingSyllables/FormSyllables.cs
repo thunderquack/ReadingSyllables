@@ -5,6 +5,7 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ReadingSyllables
@@ -83,6 +84,7 @@ namespace ReadingSyllables
                     context.Words.Remove(word);
                 }
             }
+            context.SaveChanges();
             dbWordsList = context.Words.ToList();
             foreach (var word in loadedWords)
             {
@@ -95,14 +97,15 @@ namespace ReadingSyllables
                     };
                     context.Words.Add(dbWord);
                 };
-                dbWord.Syllables = new();
-                foreach (var syllable in word.Value)
+                var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
+                dbWord.Syllables = lSyllables;
+                foreach (var syllable in lSyllables)
                 {
-                    Syllable? dbSyllable = context.Syllables.First(x => x.Name == syllable);
-                    if (dbSyllable != null)
+                    if (syllable.Words == null)
                     {
-                        dbWord.Syllables.Add(dbSyllable);
+                        syllable.Words = new();
                     }
+                    syllable.Words.Add(dbWord);
                 }
             }
             context.SaveChanges();

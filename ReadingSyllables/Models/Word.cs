@@ -10,6 +10,6 @@ namespace ReadingSyllables.Models
         public DateTime NextShow { get; set; } = DateTime.UtcNow;
         public int Show { get; set; } = 0;
         public int ShowCounter { get; set; } = 0;
-        public HashSet<Syllable>? Syllables { get; set; }
+        public HashSet<Syllable> Syllables { get; set; } = new();
     }
 }

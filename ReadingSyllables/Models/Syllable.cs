@@ -11,7 +11,7 @@ namespace ReadingSyllables.Models
         public DateTime NextShow { get; set; } = DateTime.UtcNow;
         public int Show { get; set; } = 0;
         public int ShowCounter { get; set; } = 0;
-        public HashSet<Word>? Words { get; set; }
+        public HashSet<Word> Words { get; set; } = new();
 
         public override string? ToString()
         {

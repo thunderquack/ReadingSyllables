@@ -149,7 +149,6 @@ namespace ReadingSyllables
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
-                    default:
                         return;
 
                     case ApplicationMode.Rating:
@@ -159,6 +158,10 @@ namespace ReadingSyllables
                             ShowSettingsInTitle();
                         }
                         return;
+                    default:
+                        syllablesGenerator.Size--;
+                        ShowSettingsInTitle();
+                        break;
                 }
             }
 
@@ -167,7 +170,6 @@ namespace ReadingSyllables
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
-                    default:
                         return;
 
                     case ApplicationMode.Rating:
@@ -177,6 +179,10 @@ namespace ReadingSyllables
                             ShowSettingsInTitle();
                         }
                         return;
+                    default:
+                        syllablesGenerator.Size++;
+                        ShowSettingsInTitle();
+                        break;
                 }
             }
 

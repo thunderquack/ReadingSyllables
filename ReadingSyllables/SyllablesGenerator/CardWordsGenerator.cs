@@ -4,19 +4,20 @@
     {
         public override string GenerateSyllable()
         {
-            var list = Context.Words.OrderBy(x => x.Id).Where(x => x.NextShow < DateTime.UtcNow && x.Show >= Size).Take(10).ToList();
-            if (list.Count<2)
+            var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
+            var words = Context.Words.Where(x => x.Syllables.All(x => list.Contains(x))).ToList();
+            if (words.Count < 2)
             {
                 return "НЕДОСТАТОЧНО";
             }
-            var idx = random.Next(list.Count());
-            if (list.ElementAt(idx).Name == prevSyllable)
+            var idx = random.Next(words.Count());
+            if (words.ElementAt(idx).Name == prevSyllable)
             {
                 return GenerateSyllable();
             }
-            list.ElementAt(idx).ShowCounter++;
-            prevSyllable = list.ElementAt(idx).Name;
-            return list.ElementAt(idx).Name.ToUpper();
+            words.ElementAt(idx).ShowCounter++;
+            prevSyllable = words.ElementAt(idx).Name;
+            return words.ElementAt(idx).Name.ToUpper();
         }
 
         public override string GetShortSettings()

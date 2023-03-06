@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReadingSyllables.Models;
 using ReadingSyllables.Services;
+using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
 
@@ -91,6 +92,11 @@ namespace ReadingSyllables
 
             // Button Presses
 
+            if (e.KeyCode == Keys.F5) {
+                Program.host.Services.GetRequiredService<StatisticsCalculator>().ShowStatisticsForm();
+                return;
+            }
+
             if (e.KeyCode == Keys.F11)
             {
                 switch (settings.Mode)
@@ -130,6 +136,7 @@ namespace ReadingSyllables
             if (settings.Mode == ApplicationMode.Cards)
             {
                 string shownSyllable = labelSyllable.Text.ToLower();
+
                 // Bad
                 if (e.KeyCode == Keys.F8)
                 {
@@ -139,6 +146,7 @@ namespace ReadingSyllables
                     _ = title.SetTitle($"Bad - {s.NextShow}");
                     context.SaveChanges();
                 }
+
                 // Average
                 if (e.KeyCode == Keys.F9)
                 {
@@ -148,6 +156,7 @@ namespace ReadingSyllables
                     _ = title.SetTitle($"Average - {s.NextShow}");
                     context.SaveChanges();
                 }
+
                 // Good
                 if (e.KeyCode == Keys.F10)
                 {

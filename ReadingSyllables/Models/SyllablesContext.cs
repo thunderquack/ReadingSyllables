@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace ReadingSyllables.Models
 {
@@ -6,6 +7,7 @@ namespace ReadingSyllables.Models
     {
         public string DbPath { get; }
         public DbSet<Syllable> Syllables { get; set; }
+        public DbSet<Word> Words { get; set; }
 
         public SyllablesContext()
         {
@@ -15,6 +17,12 @@ namespace ReadingSyllables.Models
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+            => options.UseSqlite($"Data Source={DbPath}")
+            .UseLazyLoadingProxies();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

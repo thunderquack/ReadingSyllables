@@ -53,10 +53,56 @@ namespace ReadingSyllables
 
                 case ApplicationMode.Cards:
                     ImportCards();
+                    ImportWords();
                     syllablesGenerator = new CardsSyllablesGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
             }
+        }
+
+        private void ImportWords()
+        {
+            string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
+            var words = JsonConvert.DeserializeObject(json);
+            Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
+            foreach (JToken word in (words as JObject).Children().ToList())
+            {
+                string key = word.Path.ToLower();
+                List<string> values = new List<string>();
+                foreach (var val in word.Values().ToList())
+                {
+                    values.Add(val.ToString().ToLower());
+                }
+                loadedWords.Add(key, values);
+            }
+            var dbWordsList = context.Words.ToList();
+            foreach (var word in dbWordsList)
+            {
+                if (!loadedWords.ContainsKey(word.Name))
+                {
+                    context.Words.Remove(word);
+                }
+            }
+            context.SaveChanges();
+            dbWordsList = context.Words.ToList();
+            foreach (var word in loadedWords)
+            {
+                Word? dbWord = dbWordsList.FirstOrDefault(x => x.Name == word.Key);
+                if (dbWord == null)
+                {
+                    dbWord = new Word()
+                    {
+                        Name = word.Key,
+                    };
+                    context.Words.Add(dbWord);
+                };
+                var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
+                if (!dbWord.Syllables.Equals(lSyllables))
+                {
+                    dbWord.Syllables = lSyllables;
+                }
+            }
+            context.SaveChanges();
         }
 
         private void ImportCards()
@@ -92,7 +138,8 @@ namespace ReadingSyllables
 
             // Button Presses
 
-            if (e.KeyCode == Keys.F5) {
+            if (e.KeyCode == Keys.F5)
+            {
                 Program.host.Services.GetRequiredService<StatisticsCalculator>().ShowStatisticsForm();
                 return;
             }

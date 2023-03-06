@@ -17,7 +17,7 @@
 
         public override string GetShortSettings()
         {
-            return $"Card - Size: {Size}";
+            return $"Card Syllables - Size: {Size}";
         }
 
         public CardSyllablesGenerator(Settings settings) : base(settings)

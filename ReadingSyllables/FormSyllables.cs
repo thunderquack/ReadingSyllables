@@ -51,10 +51,15 @@ namespace ReadingSyllables
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
 
-                case ApplicationMode.Cards:
+                case ApplicationMode.CardSyllables:
+                    ImportCards();
+                    syllablesGenerator = new CardSyllablesGenerator(settings);
+                    syllable = syllablesGenerator.GenerateSyllable();
+                    break;
+                case ApplicationMode.CardWords:
                     ImportCards();
                     ImportWords();
-                    syllablesGenerator = new CardSyllablesGenerator(settings);
+                    syllablesGenerator = new CardWordsGenerator(settings);
                     syllable = syllablesGenerator.GenerateSyllable();
                     break;
             }
@@ -186,7 +191,7 @@ namespace ReadingSyllables
                 }
             }
 
-            if (settings.Mode == ApplicationMode.Cards)
+            if (settings.Mode == ApplicationMode.CardSyllables)
             {
                 string shownSyllable = labelSyllable.Text.ToLower();
 

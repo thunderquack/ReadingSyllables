@@ -102,17 +102,6 @@ namespace ReadingSyllables
                 {
                     dbWord.Syllables = lSyllables;
                 }
-                /*
-                foreach (var syllable in lSyllables)
-                {
-                    if (syllable.Words == null)
-                    {
-                        syllable.Words = new();
-                    }
-                    syllable.Words.Add(dbWord);                    
-                }
-                break;
-                */
             }
             context.SaveChanges();
         }

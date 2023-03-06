@@ -3,13 +3,13 @@
 namespace ReadingSyllables.Models
 {
     [Index(nameof(Name), IsUnique = true)]
-    internal class Word
+    public class Word
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string Name { get; set; }
         public DateTime NextShow { get; set; } = DateTime.UtcNow;
         public int Show { get; set; } = 0;
         public int ShowCounter { get; set; } = 0;
-        public HashSet<Syllable> Syllables { get; set; } = new();
+        public virtual HashSet<Syllable> Syllables { get; set; }
     }
 }

@@ -98,15 +98,21 @@ namespace ReadingSyllables
                     context.Words.Add(dbWord);
                 };
                 var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
-                dbWord.Syllables = lSyllables;
+                if (!dbWord.Syllables.Equals(lSyllables))
+                {
+                    dbWord.Syllables = lSyllables;
+                }
+                /*
                 foreach (var syllable in lSyllables)
                 {
                     if (syllable.Words == null)
                     {
                         syllable.Words = new();
                     }
-                    syllable.Words.Add(dbWord);
+                    syllable.Words.Add(dbWord);                    
                 }
+                break;
+                */
             }
             context.SaveChanges();
         }

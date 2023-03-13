@@ -14,7 +14,7 @@
         {
         }
 
-        public override string GenerateSyllable()
+        public override string NextSyllable()
         {
             switch (Size)
             {
@@ -40,7 +40,7 @@
                     string res = $"{consonant}{vovel}".ToUpper();
                     if (res == prevSyllable)
                     {
-                        return GenerateSyllable();
+                        return NextSyllable();
                     }
                     prevSyllable = $"{consonant}{vovel}".ToUpper();
                     return prevSyllable;

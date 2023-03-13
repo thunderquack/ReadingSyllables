@@ -2,7 +2,7 @@
 {
     internal class CardWordsGenerator : AbstractGenerator
     {
-        public override string GenerateSyllable()
+        public override string NextSyllable()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
             var words = Context.Words.Where(x => x.Syllables.All(x => list.Contains(x))).ToList();
@@ -13,7 +13,7 @@
             var idx = random.Next(words.Count());
             if (words.ElementAt(idx).Name == prevSyllable)
             {
-                return GenerateSyllable();
+                return NextSyllable();
             }
             words.ElementAt(idx).ShowCounter++;
             prevSyllable = words.ElementAt(idx).Name;

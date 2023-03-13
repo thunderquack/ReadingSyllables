@@ -4,7 +4,7 @@ namespace ReadingSyllables.SyllablesGenerator
 {
     internal class CardWordsGenerator : AbstractGenerator
     {
-        protected override string GenerateSyllable()
+        protected override string Generate()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
             var words = Context.Words.Where(x => x.Syllables.All(x => list.Contains(x))).ToList();

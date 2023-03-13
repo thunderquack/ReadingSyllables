@@ -11,10 +11,22 @@ namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
-        private string syllable = "";
-        private string nextSyllable = "";
+        public string CurrentPiece
+        {
+            get
+            {
+                return piecesGenerator.GetCurrentPiece();
+            }
+        }
+        public string NextPiece
+        {
+            get
+            {
+                return piecesGenerator.GetNextPiece();
+            }
+        }
         private Settings settings;
-        private AbstractGenerator syllablesGenerator;
+        private AbstractGenerator piecesGenerator;
 
         private SyllablesContext context
         {
@@ -41,29 +53,26 @@ namespace ReadingSyllables
             {
                 case ApplicationMode.Random:
                 default:
-                    syllablesGenerator = new RandomSyllablesGenerator(settings);
-                    syllablesGenerator.Size = 2;
+                    piecesGenerator = new RandomSyllablesGenerator(settings);
+                    piecesGenerator.Size = 2;
                     break;
 
                 case ApplicationMode.Rating:
-                    syllablesGenerator = new RatingSyllablesGenerator(settings);
+                    piecesGenerator = new RatingSyllablesGenerator(settings);
                     break;
 
                 case ApplicationMode.CardSyllables:
                     ImportCards();
-                    syllablesGenerator = new CardSyllablesGenerator(settings);
+                    piecesGenerator = new CardSyllablesGenerator(settings);
                     break;
 
                 case ApplicationMode.CardWords:
                     ImportCards();
                     ImportWords();
-                    syllablesGenerator = new CardWordsGenerator(settings);
+                    piecesGenerator = new CardWordsGenerator(settings);
                     break;
             }
-            syllablesGenerator.GetCurrentSyllableAndGenerateNext();
-            syllablesGenerator.GetCurrentSyllableAndGenerateNext();
-            syllable = syllablesGenerator.GetCurrentSyllable();
-            labelSyllable.Text = syllable.ToUpper();
+            labelSyllable.Text = CurrentPiece.ToUpper();
             ResizeLabel();
             ShowSettingsInTitle();
         }
@@ -137,7 +146,7 @@ namespace ReadingSyllables
 
         private void ShowSettingsInTitle()
         {
-            Text = $"{syllablesGenerator.GetNextSyllable()} - {syllablesGenerator.GetShortSettings()}";
+            Text = $"{piecesGenerator.GetNextPiece()} - {piecesGenerator.GetShortSettings()}";
         }
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
@@ -162,15 +171,15 @@ namespace ReadingSyllables
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.Size > 2)
+                        if (piecesGenerator.Settings.Size > 2)
                         {
-                            syllablesGenerator.Settings.Size--;
+                            piecesGenerator.Settings.Size--;
                             ShowSettingsInTitle();
                         }
                         return;
 
                     default:
-                        syllablesGenerator.Size--;
+                        piecesGenerator.Size--;
                         ShowSettingsInTitle();
                         break;
                 }
@@ -185,15 +194,15 @@ namespace ReadingSyllables
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.Size < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
+                        if (piecesGenerator.Settings.Size < (piecesGenerator as RatingSyllablesGenerator).GetLength() - 1)
                         {
-                            syllablesGenerator.Settings.Size++;
+                            piecesGenerator.Settings.Size++;
                             ShowSettingsInTitle();
                         }
                         return;
 
                     default:
-                        syllablesGenerator.Size++;
+                        piecesGenerator.Size++;
                         ShowSettingsInTitle();
                         break;
                 }
@@ -206,7 +215,7 @@ namespace ReadingSyllables
                 if (keyCodes.Contains(e.KeyCode))
                 {
                     keyProcessed = true;
-                    var cardGenerator = syllablesGenerator as ICardGenerator;
+                    var cardGenerator = piecesGenerator as ICardGenerator;
                     if (cardGenerator == null)
                     {
                         return;
@@ -233,10 +242,8 @@ namespace ReadingSyllables
             }
 
             if (keyProcessed)
-            {
-                nextSyllable = syllablesGenerator.GetCurrentSyllableAndGenerateNext();
-                labelSyllable.Text = syllable.ToUpper();
-                syllable = nextSyllable;
+            {                
+                labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
                 ShowSettingsInTitle();
                 ResizeLabel();
             }

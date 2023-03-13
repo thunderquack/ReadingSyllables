@@ -8,7 +8,7 @@ namespace ReadingSyllables.SyllablesGenerator
     {
         private Dictionary<string, int> Syllables = new Dictionary<string, int>();
 
-        protected override string GenerateSyllable()
+        protected override string Generate()
         {
             return Syllables.Keys.ElementAt(random.Next(0, Size)).ToUpper();
         }

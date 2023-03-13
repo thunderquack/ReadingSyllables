@@ -14,7 +14,7 @@
         {
         }
 
-        protected override string GenerateSyllable()
+        protected override string Generate()
         {
             switch (Size)
             {

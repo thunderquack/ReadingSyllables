@@ -6,9 +6,9 @@ namespace ReadingSyllables.SyllablesGenerator
     internal abstract class AbstractGenerator
     {
         public Settings Settings { get; private set; }
-        protected string previousSyllable = "";
-        protected string currentSyllable = "";
-        protected string nextSyllable = "";
+        protected string previousPiece = "";
+        protected string currentPiece = "";
+        protected string nextPiece = "";
         protected Random random = new();
         public int Size { get; set; }
 
@@ -28,39 +28,45 @@ namespace ReadingSyllables.SyllablesGenerator
         {
             Settings = settings;
             Size = settings.Size;
+            // Generating three times in order to fill in
+            // previous, current and next
+            for (int i = 0; i < 3; i++)
+            {
+                GetCurrentPieceAndGenerateNext();
+            }
         }
 
         public abstract string GetShortSettings();
 
-        protected abstract string GenerateSyllable();
+        protected abstract string Generate();
 
-        public string GetCurrentSyllableAndGenerateNext()
+        public string GetCurrentPieceAndGenerateNext()
         {
-            previousSyllable = currentSyllable;
-            currentSyllable = nextSyllable;
-            string tempSyllable;
+            previousPiece = currentPiece;
+            currentPiece = nextPiece;
+            string temp;
             do
             {
-                tempSyllable = GenerateSyllable();
+                temp = Generate();
             }
-            while (tempSyllable == nextSyllable);
-            nextSyllable = tempSyllable;
-            return previousSyllable;
+            while (temp == nextPiece);
+            nextPiece = temp;
+            return currentPiece;
         }
 
-        public string GetCurrentSyllable()
+        public string GetCurrentPiece()
         {
-            return currentSyllable;
+            return currentPiece;
         }
 
-        public string GetPreviousSyllable()
+        public string GetPreviousPiece()
         {
-            return previousSyllable;
+            return previousPiece;
         }
 
-        public string GetNextSyllable()
+        public string GetNextPiece()
         {
-            return nextSyllable;
+            return nextPiece;
         }
         protected void Save()
         {

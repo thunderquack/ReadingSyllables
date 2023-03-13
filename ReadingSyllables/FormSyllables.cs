@@ -53,6 +53,7 @@ namespace ReadingSyllables
                     ImportCards();
                     syllablesGenerator = new CardSyllablesGenerator(settings);
                     break;
+
                 case ApplicationMode.CardWords:
                     ImportCards();
                     ImportWords();
@@ -163,6 +164,7 @@ namespace ReadingSyllables
                             ShowSettingsInTitle();
                         }
                         return;
+
                     default:
                         syllablesGenerator.Size--;
                         ShowSettingsInTitle();
@@ -185,6 +187,7 @@ namespace ReadingSyllables
                             ShowSettingsInTitle();
                         }
                         return;
+
                     default:
                         syllablesGenerator.Size++;
                         ShowSettingsInTitle();

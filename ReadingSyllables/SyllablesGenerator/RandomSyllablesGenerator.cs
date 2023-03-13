@@ -14,7 +14,7 @@
         {
         }
 
-        protected override string NextSyllable()
+        protected override string GenerateSyllable()
         {
             switch (Size)
             {
@@ -37,7 +37,7 @@
                     }
                     idx = random.Next(0, consonants.Count - 1);
                     char consonant = consonants[idx];
-                    return $"{consonant}{vovel}";                    
+                    return $"{consonant}{vovel}";
 
                 default:
                     return "";

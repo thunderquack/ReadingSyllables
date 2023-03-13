@@ -8,6 +8,7 @@ namespace ReadingSyllables.SyllablesGenerator
         public Settings Settings { get; private set; }
         protected string previousSyllable = "";
         protected string currentSyllable = "";
+        protected string nextSyllable = "";
         protected Random random = new();
         public int Size { get; set; }
 
@@ -30,26 +31,36 @@ namespace ReadingSyllables.SyllablesGenerator
         }
 
         public abstract string GetShortSettings();
-        protected abstract string NextSyllable();
+
+        protected abstract string GenerateSyllable();
+
         public string GetCurrentSyllableAndGenerateNext()
         {
             previousSyllable = currentSyllable;
+            currentSyllable = nextSyllable;
             string tempSyllable;
             do
             {
-                tempSyllable = NextSyllable();
+                tempSyllable = GenerateSyllable();
             }
-            while (tempSyllable == currentSyllable);
-            currentSyllable = tempSyllable;
+            while (tempSyllable == nextSyllable);
+            nextSyllable = tempSyllable;
             return previousSyllable;
         }
+
         public string GetCurrentSyllable()
         {
             return currentSyllable;
         }
+
         public string GetPreviousSyllable()
         {
             return previousSyllable;
+        }
+
+        public string GetNextSyllable()
+        {
+            return nextSyllable;
         }
     }
 }

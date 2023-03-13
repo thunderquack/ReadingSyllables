@@ -8,18 +8,9 @@ namespace ReadingSyllables.SyllablesGenerator
     {
         private Dictionary<string, int> Syllables = new Dictionary<string, int>();
 
-        public override string NextSyllable()
+        protected override string NextSyllable()
         {
-            string syllable = Syllables.Keys.ElementAt(random.Next(0, Size)).ToUpper();
-            if (syllable == prevSyllable)
-            {
-                return NextSyllable();
-            }
-            else
-            {
-                prevSyllable = syllable;
-                return syllable;
-            }
+            return Syllables.Keys.ElementAt(random.Next(0, Size)).ToUpper();
         }
 
         public override string GetShortSettings()

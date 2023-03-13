@@ -1,23 +1,21 @@
-﻿namespace ReadingSyllables.SyllablesGenerator
+﻿using ReadingSyllables.Exceptions;
+
+namespace ReadingSyllables.SyllablesGenerator
 {
     internal class CardWordsGenerator : AbstractGenerator
     {
-        public override string NextSyllable()
+        protected override string NextSyllable()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
             var words = Context.Words.Where(x => x.Syllables.All(x => list.Contains(x))).ToList();
             if (words.Count < 2)
             {
-                return "НЕДОСТАТОЧНО";
+                throw new NotEnoughWordsException();
             }
             var idx = random.Next(words.Count());
-            if (words.ElementAt(idx).Name == prevSyllable)
-            {
-                return NextSyllable();
-            }
             words.ElementAt(idx).ShowCounter++;
-            prevSyllable = words.ElementAt(idx).Name;
-            return words.ElementAt(idx).Name.ToUpper();
+            Context.SaveChanges();
+            return words.ElementAt(idx).Name;
         }
 
         public override string GetShortSettings()

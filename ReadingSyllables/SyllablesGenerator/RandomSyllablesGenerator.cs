@@ -14,7 +14,7 @@
         {
         }
 
-        public override string NextSyllable()
+        protected override string NextSyllable()
         {
             switch (Size)
             {
@@ -37,13 +37,7 @@
                     }
                     idx = random.Next(0, consonants.Count - 1);
                     char consonant = consonants[idx];
-                    string res = $"{consonant}{vovel}".ToUpper();
-                    if (res == prevSyllable)
-                    {
-                        return NextSyllable();
-                    }
-                    prevSyllable = $"{consonant}{vovel}".ToUpper();
-                    return prevSyllable;
+                    return $"{consonant}{vovel}";                    
 
                 default:
                     return "";

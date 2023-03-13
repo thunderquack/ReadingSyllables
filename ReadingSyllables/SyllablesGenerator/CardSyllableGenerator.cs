@@ -2,17 +2,17 @@
 {
     internal class CardSyllablesGenerator : AbstractGenerator, ICardGenerator
     {
-        public override string NextSyllable()
+        protected override string NextSyllable()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.NextShow < DateTime.UtcNow).Take(Size).ToList();
             var idx = random.Next(list.Count());
-            if (list.ElementAt(idx).Name == prevSyllable)
+            if (list.ElementAt(idx).Name == previousSyllable)
             {
                 return NextSyllable();
             }
             list.ElementAt(idx).ShowCounter++;
-            prevSyllable = list.ElementAt(idx).Name;
-            return list.ElementAt(idx).Name.ToUpper();
+            Context.SaveChanges();
+            return list.ElementAt(idx).Name;
         }
 
         public override string GetShortSettings()

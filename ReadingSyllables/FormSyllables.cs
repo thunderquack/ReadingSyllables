@@ -43,26 +43,24 @@ namespace ReadingSyllables
                 default:
                     syllablesGenerator = new RandomSyllablesGenerator(settings);
                     syllablesGenerator.Size = 2;
-                    syllable = syllablesGenerator.NextSyllable();
                     break;
 
                 case ApplicationMode.Rating:
                     syllablesGenerator = new RatingSyllablesGenerator(settings);
-                    syllable = syllablesGenerator.NextSyllable();
                     break;
 
                 case ApplicationMode.CardSyllables:
                     ImportCards();
                     syllablesGenerator = new CardSyllablesGenerator(settings);
-                    syllable = syllablesGenerator.NextSyllable();
                     break;
                 case ApplicationMode.CardWords:
                     ImportCards();
                     ImportWords();
                     syllablesGenerator = new CardWordsGenerator(settings);
-                    syllable = syllablesGenerator.NextSyllable();
                     break;
             }
+            syllablesGenerator.GetCurrentSyllableAndGenerateNext();
+            syllable = syllablesGenerator.GetCurrentSyllable();
         }
 
         private void ImportWords()
@@ -233,8 +231,8 @@ namespace ReadingSyllables
 
             if (keyProcessed)
             {
-                nextSyllable = syllablesGenerator.NextSyllable();
-                labelSyllable.Text = syllable;
+                nextSyllable = syllablesGenerator.GetCurrentSyllableAndGenerateNext();
+                labelSyllable.Text = syllable.ToUpper();
                 syllable = nextSyllable;
                 ShowSettingsInTitle();
                 ResizeLabel();

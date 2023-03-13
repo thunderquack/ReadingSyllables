@@ -20,19 +20,31 @@
             return $"Card Syllables - Size: {Size}";
         }
 
-        public void DoBad()
+        public string DoBad()
         {
-            throw new NotImplementedException();
+            var s = Context.Syllables.First(x => x.Name == currentSyllable);
+            s.Show = 0;
+            s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+            Save();
+            return $"Bad - {s.NextShow.ToLocalTime()}";
         }
 
-        public void DoAverage()
+        public string DoAverage()
         {
-            throw new NotImplementedException();
+            var s = Context.Syllables.First(x => x.Name == currentSyllable);
+            s.Show++;
+            s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+            Save();
+            return $"Average - {s.NextShow.ToLocalTime()}";
         }
 
-        public void DoGood()
+        public string DoGood()
         {
-            throw new NotImplementedException();
+            var s = Context.Syllables.First(x => x.Name == currentSyllable);
+            s.Show++;
+            s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
+            Save();
+            return $"Good - {s.NextShow.ToLocalTime()}";
         }
 
         public CardSyllablesGenerator(Settings settings) : base(settings)

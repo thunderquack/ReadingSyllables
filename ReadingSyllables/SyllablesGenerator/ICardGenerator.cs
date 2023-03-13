@@ -2,10 +2,10 @@
 {
     internal interface ICardGenerator
     {
-        void DoBad();
+        string DoBad();
 
-        void DoAverage();
+        string DoAverage();
 
-        void DoGood();
+        string DoGood();
     }
 }

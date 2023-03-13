@@ -62,5 +62,9 @@ namespace ReadingSyllables.SyllablesGenerator
         {
             return nextSyllable;
         }
+        protected void Save()
+        {
+            Context.SaveChanges();
+        }
     }
 }

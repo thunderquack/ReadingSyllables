@@ -61,7 +61,11 @@ namespace ReadingSyllables
                     break;
             }
             syllablesGenerator.GetCurrentSyllableAndGenerateNext();
+            syllablesGenerator.GetCurrentSyllableAndGenerateNext();
             syllable = syllablesGenerator.GetCurrentSyllable();
+            labelSyllable.Text = syllable.ToUpper();
+            ResizeLabel();
+            ShowSettingsInTitle();
         }
 
         private void ImportWords()
@@ -133,7 +137,7 @@ namespace ReadingSyllables
 
         private void ShowSettingsInTitle()
         {
-            Text = $"{syllable} - {syllablesGenerator.GetShortSettings()}";
+            Text = $"{syllablesGenerator.GetNextSyllable()} - {syllablesGenerator.GetShortSettings()}";
         }
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
@@ -195,38 +199,34 @@ namespace ReadingSyllables
                 }
             }
 
-            if (settings.Mode == ApplicationMode.CardSyllables)
+            if (settings.Mode == ApplicationMode.CardSyllables || settings.Mode == ApplicationMode.CardWords)
             {
                 Keys[] keyCodes = { Keys.F7, Keys.F8, Keys.F9, Keys.F10 };
 
                 if (keyCodes.Contains(e.KeyCode))
                 {
-                    string shownSyllable = labelSyllable.Text.ToLower();
                     keyProcessed = true;
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-
+                    var cardGenerator = syllablesGenerator as ICardGenerator;
+                    if (cardGenerator == null)
+                    {
+                        return;
+                    }
                     // Bad
                     if (e.KeyCode == Keys.F8)
                     {
-                        s.Show = 0;
-                        s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                        _ = title.SetTitle($"Bad - {s.NextShow.ToLocalTime()}");
+                        _ = title.SetTitle(cardGenerator.DoBad());
                     }
 
                     // Average
                     if (e.KeyCode == Keys.F9)
                     {
-                        s.Show++;
-                        s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                        _ = title.SetTitle($"Average - {s.NextShow.ToLocalTime()}");
+                        _ = title.SetTitle(cardGenerator.DoAverage());
                     }
 
                     // Good
                     if (e.KeyCode == Keys.F10)
                     {
-                        s.Show++;
-                        s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
-                        _ = title.SetTitle($"Good - {s.NextShow.ToLocalTime()}");
+                        _ = title.SetTitle(cardGenerator.DoGood());
                     }
                     context.SaveChanges();
                 }

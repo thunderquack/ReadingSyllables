@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ReadingSyllables.Models;
+using System.Security.Policy;
 
 namespace ReadingSyllables.SyllablesGenerator
 {
@@ -29,6 +30,6 @@ namespace ReadingSyllables.SyllablesGenerator
         }
 
         public abstract string GetShortSettings();
-        public abstract string GenerateSyllable();
+        public abstract string GenerateSyllable();        
     }
 }

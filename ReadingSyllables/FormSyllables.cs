@@ -140,6 +140,7 @@ namespace ReadingSyllables
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
+            bool keyProcessed = false;
 
             // Button Presses
 
@@ -151,6 +152,7 @@ namespace ReadingSyllables
 
             if (e.KeyCode == Keys.F11)
             {
+                keyProcessed = true;
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
@@ -172,6 +174,7 @@ namespace ReadingSyllables
 
             if (e.KeyCode == Keys.F12)
             {
+                keyProcessed = true;
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
@@ -193,44 +196,49 @@ namespace ReadingSyllables
 
             if (settings.Mode == ApplicationMode.CardSyllables)
             {
-                string shownSyllable = labelSyllable.Text.ToLower();
+                Keys[] keyCodes = { Keys.F7, Keys.F8, Keys.F9, Keys.F10 };
 
-                // Bad
-                if (e.KeyCode == Keys.F8)
+                if (keyCodes.Contains(e.KeyCode))
                 {
+                    string shownSyllable = labelSyllable.Text.ToLower();
+                    keyProcessed = true;
                     var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show = 0;
-                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                    _ = title.SetTitle($"Bad - {s.NextShow}");
-                    context.SaveChanges();
-                }
 
-                // Average
-                if (e.KeyCode == Keys.F9)
-                {
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show++;
-                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                    _ = title.SetTitle($"Average - {s.NextShow}");
-                    context.SaveChanges();
-                }
+                    // Bad
+                    if (e.KeyCode == Keys.F8)
+                    {
+                        s.Show = 0;
+                        s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                        _ = title.SetTitle($"Bad - {s.NextShow.ToLocalTime()}");
+                    }
 
-                // Good
-                if (e.KeyCode == Keys.F10)
-                {
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show++;
-                    s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
-                    _ = title.SetTitle($"Good - {s.NextShow}");
+                    // Average
+                    if (e.KeyCode == Keys.F9)
+                    {
+                        s.Show++;
+                        s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
+                        _ = title.SetTitle($"Average - {s.NextShow.ToLocalTime()}");
+                    }
+
+                    // Good
+                    if (e.KeyCode == Keys.F10)
+                    {
+                        s.Show++;
+                        s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
+                        _ = title.SetTitle($"Good - {s.NextShow.ToLocalTime()}");
+                    }
                     context.SaveChanges();
                 }
             }
 
-            nextSyllable = syllablesGenerator.GenerateSyllable();
-            labelSyllable.Text = syllable;
-            syllable = nextSyllable;
-            ShowSettingsInTitle();
-            ResizeLabel();
+            if (keyProcessed)
+            {
+                nextSyllable = syllablesGenerator.GenerateSyllable();
+                labelSyllable.Text = syllable;
+                syllable = nextSyllable;
+                ShowSettingsInTitle();
+                ResizeLabel();
+            }
         }
 
         private void ResizeLabel()

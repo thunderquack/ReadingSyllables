@@ -36,9 +36,11 @@
             rbText.BackColor = SystemColors.Control;
             rbText.BorderStyle = BorderStyle.None;
             rbText.Dock = DockStyle.Fill;
+            rbText.Enabled = false;
             rbText.Location = new Point(0, 0);
             rbText.Margin = new Padding(0);
             rbText.Name = "rbText";
+            rbText.ReadOnly = true;
             rbText.Size = new Size(1143, 750);
             rbText.TabIndex = 0;
             rbText.Text = "СЛОГ";

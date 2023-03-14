@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReadingSyllables.Exceptions;
@@ -241,7 +242,17 @@ namespace ReadingSyllables
                     }
                     context.SaveChanges();
                 }
+                if (e.KeyCode == Keys.Right)
+                {
+                    Random r = new();
+                    int i = r.Next(rbText.Text.Length);
+                    rbText.Select(0, rbText.Text.Length);
+                    rbText.SelectionColor = Color.DarkBlue;
+                    rbText.Select(0,i);
+                    rbText.SelectionColor = Color.Red;
+                }
             }
+            
 
             if (keyProcessed)
             {
@@ -266,9 +277,9 @@ namespace ReadingSyllables
         private void ResizeLabel()
         {
             Graphics graphics = rbText.CreateGraphics();
-            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
-            int titleHeight = screenRectangle.Top - this.Top;
-            int height = this.Height - titleHeight;
+            Rectangle screenRectangle = RectangleToScreen(ClientRectangle);
+            int titleHeight = screenRectangle.Top - Top;
+            int height = Height - titleHeight;
             Font font = new Font(rbText.Font.FontFamily, height, rbText.Font.Style);
             int minFontSize = 8;
             SizeF size = graphics.MeasureString(rbText.Text, font);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReadingSyllables.Exceptions;
 using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
@@ -247,7 +248,7 @@ namespace ReadingSyllables
                 {
                     labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
                 }
-                catch {
+                catch (NotEnoughWordsException ex) {
                     MessageBox.Show("Не получается сгенерировать слова");
                     Application.Exit();
                 }

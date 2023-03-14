@@ -6,6 +6,7 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
+using System.ComponentModel;
 using System.Text;
 
 namespace ReadingSyllables
@@ -248,9 +249,14 @@ namespace ReadingSyllables
                 {
                     labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
                 }
-                catch (NotEnoughWordsException ex) {
-                    MessageBox.Show("Не получается сгенерировать слова");
-                    Application.Exit();
+                catch (NotEnoughWordsException ex)
+                {
+                    MessageBox.Show("Не получается сгенерировать слова," + Environment.NewLine +
+                        "Возможно следует вернуться к слогам", 
+                        caption: "Ошибка", 
+                        icon: MessageBoxIcon.Stop, 
+                        buttons: MessageBoxButtons.OK);
+                    Environment.Exit(-1);
                 }
                 ShowSettingsInTitle();
                 ResizeLabel();

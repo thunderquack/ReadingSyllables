@@ -7,6 +7,7 @@ using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ReadingSyllables
 {
@@ -73,7 +74,7 @@ namespace ReadingSyllables
                     piecesGenerator = new CardWordsGenerator(settings);
                     break;
             }
-            labelSyllable.Text = CurrentPiece.ToUpper();
+            rbText.Text = CurrentPiece.ToUpper();
             ResizeLabel();
             ShowSettingsInTitle();
         }
@@ -246,14 +247,14 @@ namespace ReadingSyllables
             {
                 try
                 {
-                    labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
+                    rbText.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
                 }
                 catch (NotEnoughWordsException ex)
                 {
                     MessageBox.Show("Не получается сгенерировать слова," + Environment.NewLine +
-                        "Возможно следует вернуться к слогам", 
-                        caption: "Ошибка", 
-                        icon: MessageBoxIcon.Stop, 
+                        "Возможно следует вернуться к слогам",
+                        caption: "Ошибка",
+                        icon: MessageBoxIcon.Stop,
                         buttons: MessageBoxButtons.OK);
                     Environment.Exit(-1);
                 }
@@ -264,15 +265,15 @@ namespace ReadingSyllables
 
         private void ResizeLabel()
         {
-            Graphics graphics = labelSyllable.CreateGraphics();
+            Graphics graphics = rbText.CreateGraphics();
             Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
             int height = this.Height - titleHeight;
-            Font font = new Font(labelSyllable.Font.FontFamily, height, labelSyllable.Font.Style);
+            Font font = new Font(rbText.Font.FontFamily, height, rbText.Font.Style);
             int minFontSize = 8;
-            SizeF size = graphics.MeasureString(labelSyllable.Text, font);
+            SizeF size = graphics.MeasureString(rbText.Text, font);
             float fontSize = font.Size;
-            while (size.Width > labelSyllable.Width - 100 || size.Height > labelSyllable.Height)
+            while (size.Width > rbText.Width - 100 || size.Height > rbText.Height)
             {
                 fontSize--;
                 if (fontSize < minFontSize)
@@ -282,15 +283,22 @@ namespace ReadingSyllables
                     break;
                 }
                 font = new Font(font.FontFamily, fontSize, font.Style);
-                size = graphics.MeasureString(labelSyllable.Text, font);
+                size = graphics.MeasureString(rbText.Text, font);
             }
-            labelSyllable.Font = font;
+            rbText.Font = font;
             graphics.Dispose();
         }
 
         internal void SetTitle(string title)
         {
             Text = title;
+        }
+
+        private void rbText_TextChanged(object sender, EventArgs e)
+        {
+            rbText.SelectAll();
+            rbText.SelectionAlignment = HorizontalAlignment.Center;
+            rbText.DeselectAll();
         }
     }
 }

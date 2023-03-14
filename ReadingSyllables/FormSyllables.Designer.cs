@@ -28,25 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            labelSyllable = new Label();
+            rbText = new RichTextBox();
             SuspendLayout();
             // 
-            // labelSyllable
+            // rbText
             // 
-            labelSyllable.Dock = DockStyle.Fill;
-            labelSyllable.Location = new Point(0, 0);
-            labelSyllable.Margin = new Padding(0);
-            labelSyllable.Name = "labelSyllable";
-            labelSyllable.Size = new Size(1143, 750);
-            labelSyllable.TabIndex = 0;
-            labelSyllable.Text = "СЛОГ";
-            labelSyllable.TextAlign = ContentAlignment.MiddleCenter;
+            rbText.BackColor = SystemColors.Control;
+            rbText.BorderStyle = BorderStyle.None;
+            rbText.Dock = DockStyle.Fill;
+            rbText.Location = new Point(0, 0);
+            rbText.Margin = new Padding(0);
+            rbText.Name = "rbText";
+            rbText.Size = new Size(1143, 750);
+            rbText.TabIndex = 0;
+            rbText.Text = "СЛОГ";
+            rbText.TextChanged += rbText_TextChanged;
             // 
             // FormSyllables
             // 
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(1143, 750);
-            Controls.Add(labelSyllable);
+            Controls.Add(rbText);
             Margin = new Padding(4, 5, 4, 5);
             Name = "FormSyllables";
             StartPosition = FormStartPosition.CenterScreen;
@@ -57,6 +59,6 @@
 
         #endregion
 
-        private Label labelSyllable;
+        private RichTextBox rbText;
     }
 }

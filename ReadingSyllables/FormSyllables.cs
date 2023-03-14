@@ -242,8 +242,15 @@ namespace ReadingSyllables
             }
 
             if (keyProcessed)
-            {                
-                labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
+            {
+                try
+                {
+                    labelSyllable.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
+                }
+                catch {
+                    MessageBox.Show("Не получается сгенерировать слова");
+                    Application.Exit();
+                }
                 ShowSettingsInTitle();
                 ResizeLabel();
             }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ReadingSyllables.Exceptions;
 using ReadingSyllables.Models;
 
 namespace ReadingSyllables.SyllablesGenerator
@@ -26,13 +27,21 @@ namespace ReadingSyllables.SyllablesGenerator
 
         public AbstractGenerator(Settings settings)
         {
-            Settings = settings;
-            Size = settings.Size;
-            // Generating three times in order to fill in
-            // previous, current and next
-            for (int i = 0; i < 3; i++)
+            try
             {
-                GetCurrentPieceAndGenerateNext();
+                Settings = settings;
+                Size = settings.Size;
+                // Generating three times in order to fill in
+                // previous, current and next
+                for (int i = 0; i < 3; i++)
+                {
+                    GetCurrentPieceAndGenerateNext();
+                }
+            }
+            catch (GeneratorException ex)
+            {
+                UnableToCreateGeneratorException unableToCreateGeneratorException = new UnableToCreateGeneratorException(ex);
+                throw unableToCreateGeneratorException;
             }
         }
 
@@ -47,7 +56,14 @@ namespace ReadingSyllables.SyllablesGenerator
             string temp;
             do
             {
-                temp = Generate();
+                try
+                {
+                    temp = Generate();
+                }
+                catch (GeneratorException ex)
+                {
+                    throw ex;
+                }
             }
             while (temp == nextPiece);
             nextPiece = temp;

@@ -1,6 +1,6 @@
 ﻿namespace ReadingSyllables.Exceptions
 {
-    internal class NotEnoughWordsException : Exception
+    internal class NotEnoughWordsException : GeneratorException
     {
         public NotEnoughWordsException() : base("Not enough words, try increase size of generator")
         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReadingSyllables.Exceptions;
@@ -8,7 +7,6 @@ using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
 using System.Text;
-using System.Windows.Forms;
 
 namespace ReadingSyllables
 {

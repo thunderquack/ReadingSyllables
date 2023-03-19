@@ -34,6 +34,7 @@
             // rbText
             // 
             rbText.BackColor = SystemColors.Control;
+            rbText.SelectionColor = Color.DarkBlue;
             rbText.BorderStyle = BorderStyle.None;
             rbText.Dock = DockStyle.Fill;
             rbText.Enabled = false;

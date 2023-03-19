@@ -250,11 +250,10 @@ namespace ReadingSyllables
                     int i = r.Next(rbText.Text.Length);
                     rbText.Select(0, rbText.Text.Length);
                     rbText.SelectionColor = Color.DarkBlue;
-                    rbText.Select(0,i);
-                    rbText.SelectionColor = Color.Red;
+                    rbText.Select(0, i);
+                    rbText.SelectionColor = Color.Green;
                 }
-            }
-            
+            }            
 
             if (keyProcessed)
             {

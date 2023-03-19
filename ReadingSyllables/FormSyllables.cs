@@ -82,9 +82,6 @@ namespace ReadingSyllables
         {
             string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
 
-            List<string> syllablesList = new List<string>();
-            List<string> splitWordsList = new List<string>();
-
             var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
             Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
             foreach (KeyValuePair<string, JObject> word in wordsDict)

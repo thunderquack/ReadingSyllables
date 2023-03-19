@@ -11,5 +11,6 @@ namespace ReadingSyllables.Models
         public int Show { get; set; } = 0;
         public int ShowCounter { get; set; } = 0;
         public virtual HashSet<Syllable> Syllables { get; set; }
+        public virtual string? Construction { get; set; }
     }
 }

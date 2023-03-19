@@ -81,15 +81,19 @@ namespace ReadingSyllables
         private void ImportWords()
         {
             string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
-            var words = JsonConvert.DeserializeObject(json);
+
+            List<string> syllablesList = new List<string>();
+            List<string> splitWordsList = new List<string>();
+
+            var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
             Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
-            foreach (JToken word in (words as JObject).Children().ToList())
+            foreach (KeyValuePair<string, JObject> word in wordsDict)
             {
-                string key = word.Path.ToLower();
+                string key = word.Key.ToLower();
                 List<string> values = new List<string>();
-                foreach (var val in word.Values().ToList())
+                foreach (var syllable in word.Value["syllables"])
                 {
-                    values.Add(val.ToString().ToLower());
+                    values.Add(syllable.ToString());
                 }
                 loadedWords.Add(key, values);
             }

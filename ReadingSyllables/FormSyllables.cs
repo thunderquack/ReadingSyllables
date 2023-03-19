@@ -84,6 +84,7 @@ namespace ReadingSyllables
 
             var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
             Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
+            Dictionary<string, string> constructions = new Dictionary<string, string>();
             foreach (KeyValuePair<string, JObject> word in wordsDict)
             {
                 string key = word.Key.ToLower();
@@ -93,6 +94,7 @@ namespace ReadingSyllables
                     values.Add(syllable.ToString());
                 }
                 loadedWords.Add(key, values);
+                constructions.Add(key, word.Value["split_word"].ToString()); // ugly but fast
             }
             var dbWordsList = context.Words.ToList();
             foreach (var word in dbWordsList)
@@ -120,6 +122,7 @@ namespace ReadingSyllables
                 {
                     dbWord.Syllables = lSyllables;
                 }
+                dbWord.Construction = constructions[word.Key];
             }
             context.SaveChanges();
         }

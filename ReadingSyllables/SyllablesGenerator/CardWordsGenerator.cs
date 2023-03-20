@@ -10,7 +10,7 @@ namespace ReadingSyllables.SyllablesGenerator
         protected override string Generate()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
-            var words = Context.Words.Where(x => x.Syllables.All(x => list.Contains(x) && x.NextShow < DateTime.UtcNow)).ToList();
+            var words = Context.Words.Where(w => w.Syllables.All(s => list.Contains(s) && w.NextShow < DateTime.UtcNow)).ToList();
             if (words.Count < 3)
             {
                 throw new NotEnoughWordsException();

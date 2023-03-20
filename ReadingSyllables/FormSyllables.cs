@@ -257,13 +257,7 @@ namespace ReadingSyllables
                 {
                     if (e.KeyCode == Keys.Right)
                     {
-                        MoveHighlightToRight();
-                        Random r = new();
-                        int i = r.Next(rbText.Text.Length);
-                        rbText.Select(0, rbText.Text.Length);
-                        rbText.SelectionColor = Color.DarkBlue;
-                        rbText.Select(0, i);
-                        rbText.SelectionColor = Color.Green;
+                        MoveHighlightToRight();                        
                     }
                     if (e.KeyCode == Keys.Left)
                     {
@@ -280,6 +274,7 @@ namespace ReadingSyllables
                     {
                         construction = ((IHasConstruction)piecesGenerator).GetConstruction().ToUpper();
                     }
+                    currentSyllable = 0;
                 }
                 catch (NotEnoughWordsException ex)
                 {
@@ -307,17 +302,36 @@ namespace ReadingSyllables
 
         private void DrawSyllable()
         {
+            int position = 0;
+            int sylalblePosition = 0;
+            int i = 0;
+            var syllables = construction.Split("|").ToList();
+            while (sylalblePosition < syllables.Count)
+            {
+                int startPosition = position;
+                position = startPosition + syllables[i].Length;
+                rbText.Select(startPosition, syllables[i].Length);
+                if (sylalblePosition == currentSyllable)
+                {
+                    rbText.SelectionColor = Color.Green;
+                }
+                else
+                {
+                    rbText.SelectionColor = Color.DarkBlue;
+                }
+                sylalblePosition++;
+                i++;
+            }
+        }
+
+        private void MoveHighlightToRight()
+        {
             if (currentSyllable == construction.Split("|").Length - 1)
             {
                 return;
             }
             currentSyllable++;
             DrawSyllable();
-        }
-
-        private void MoveHighlightToRight()
-        {
-            throw new NotImplementedException();
         }
 
         private void ResizeLabel()
@@ -353,16 +367,22 @@ namespace ReadingSyllables
 
         private void rbText_TextChanged(object sender, EventArgs e)
         {
-            rbText.SelectAll();
-            rbText.SelectionAlignment = HorizontalAlignment.Center;
-            rbText.DeselectAll();
+            Redraw();
         }
 
         private void FormSyllables_Load(object sender, EventArgs e)
         {
+            currentSyllable = 0;
+            Redraw();
+        }
+
+        private void Redraw()
+        {
             rbText.SelectAll();
+            rbText.SelectionAlignment = HorizontalAlignment.Center;
             rbText.ForeColor = Color.DarkBlue;
             rbText.DeselectAll();
+            DrawSyllable();
         }
     }
 }

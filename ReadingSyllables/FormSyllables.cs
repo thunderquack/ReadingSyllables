@@ -28,6 +28,7 @@ namespace ReadingSyllables
         }
         private Settings settings;
         private AbstractGenerator piecesGenerator;
+        private string construction = string.Empty;
 
         private SyllablesContext context
         {
@@ -74,6 +75,10 @@ namespace ReadingSyllables
                     break;
             }
             rbText.Text = CurrentPiece.ToUpper();
+            if (piecesGenerator is IHasConstruction)
+            {
+                construction = ((IHasConstruction)piecesGenerator).GetConstruction();
+            }
             ResizeLabel();
             ShowSettingsInTitle();
         }

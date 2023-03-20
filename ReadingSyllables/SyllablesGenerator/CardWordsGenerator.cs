@@ -2,8 +2,10 @@
 
 namespace ReadingSyllables.SyllablesGenerator
 {
-    internal class CardWordsGenerator : AbstractGenerator, ICardGenerator
+    internal class CardWordsGenerator : AbstractGenerator, ICardGenerator, IHasConstruction
     {
+        private string construction;
+
         protected override string Generate()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
@@ -15,6 +17,7 @@ namespace ReadingSyllables.SyllablesGenerator
             var idx = random.Next(words.Count());
             words.ElementAt(idx).ShowCounter++;
             Context.SaveChanges();
+            construction = words.ElementAt(idx).GetConstruction();
             return words.ElementAt(idx).Name;
         }
 
@@ -48,6 +51,11 @@ namespace ReadingSyllables.SyllablesGenerator
             s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
             Save();
             return $"Good - {currentPiece} - {s.NextShow.ToLocalTime()}";
+        }
+
+        public string GetConstruction()
+        {
+            return construction;
         }
 
         public CardWordsGenerator(Settings settings) : base(settings)

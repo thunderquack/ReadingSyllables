@@ -29,6 +29,7 @@ namespace ReadingSyllables
         private Settings settings;
         private AbstractGenerator piecesGenerator;
         private string construction = string.Empty;
+        private int currentSyllable = 0;
 
         private SyllablesContext context
         {
@@ -259,7 +260,7 @@ namespace ReadingSyllables
                     rbText.Select(0, i);
                     rbText.SelectionColor = Color.Green;
                 }
-            }            
+            }
 
             if (keyProcessed)
             {
@@ -320,6 +321,13 @@ namespace ReadingSyllables
         {
             rbText.SelectAll();
             rbText.SelectionAlignment = HorizontalAlignment.Center;
+            rbText.DeselectAll();
+        }
+
+        private void FormSyllables_Load(object sender, EventArgs e)
+        {
+            rbText.SelectAll();
+            rbText.ForeColor = Color.DarkBlue;
             rbText.DeselectAll();
         }
     }

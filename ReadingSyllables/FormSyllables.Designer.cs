@@ -34,7 +34,6 @@
             // rbText
             // 
             rbText.BackColor = SystemColors.Control;
-            rbText.SelectionColor = Color.DarkBlue;
             rbText.BorderStyle = BorderStyle.None;
             rbText.Dock = DockStyle.Fill;
             rbText.Enabled = false;
@@ -56,6 +55,7 @@
             Name = "FormSyllables";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Слоги";
+            Load += FormSyllables_Load;
             KeyDown += FormSyllables_KeyDown;
             ResumeLayout(false);
         }

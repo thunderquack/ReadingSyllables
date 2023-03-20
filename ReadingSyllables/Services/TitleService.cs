@@ -21,7 +21,7 @@
                     requiredForm.Invoke((MethodInvoker)delegate { requiredForm.SetTitle(title); });
                 }
                 requiredForm.Text = title;
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 if (requiredForm.Text == title)
                 {
                     if (requiredForm.InvokeRequired)

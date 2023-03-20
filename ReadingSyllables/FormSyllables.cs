@@ -73,8 +73,7 @@ namespace ReadingSyllables
 
                 case ApplicationMode.CardWords:
                     ImportCards();
-                    // TODO:
-                    // ImportWords();
+                    ImportWords();
                     piecesGenerator = new CardWordsGenerator(settings);
                     break;
             }

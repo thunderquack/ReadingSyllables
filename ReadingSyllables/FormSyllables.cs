@@ -70,14 +70,15 @@ namespace ReadingSyllables
 
                 case ApplicationMode.CardWords:
                     ImportCards();
-                    ImportWords();
+                    // TODO:
+                    // ImportWords();
                     piecesGenerator = new CardWordsGenerator(settings);
                     break;
             }
             rbText.Text = CurrentPiece.ToUpper();
             if (piecesGenerator is IHasConstruction)
             {
-                construction = ((IHasConstruction)piecesGenerator).GetConstruction();
+                construction = ((IHasConstruction)piecesGenerator).GetConstruction().ToUpper();
             }
             ResizeLabel();
             ShowSettingsInTitle();
@@ -265,6 +266,10 @@ namespace ReadingSyllables
                 try
                 {
                     rbText.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
+                    if (piecesGenerator is IHasConstruction)
+                    {
+                        construction = ((IHasConstruction)piecesGenerator).GetConstruction().ToUpper();
+                    }
                 }
                 catch (NotEnoughWordsException ex)
                 {

@@ -4,7 +4,8 @@ namespace ReadingSyllables.SyllablesGenerator
 {
     internal class CardWordsGenerator : AbstractGenerator, ICardGenerator, IHasConstruction
     {
-        private string construction;
+        private string futureConstruction = string.Empty;
+        private string construction = string.Empty;
 
         protected override string Generate()
         {
@@ -17,7 +18,8 @@ namespace ReadingSyllables.SyllablesGenerator
             var idx = random.Next(words.Count());
             words.ElementAt(idx).ShowCounter++;
             Context.SaveChanges();
-            construction = words.ElementAt(idx).GetConstruction();
+            construction = futureConstruction;
+            futureConstruction = words.ElementAt(idx).GetConstruction();           
             return words.ElementAt(idx).Name;
         }
 

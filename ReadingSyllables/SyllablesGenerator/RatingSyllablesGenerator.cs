@@ -4,27 +4,18 @@ using System.Text;
 
 namespace ReadingSyllables.SyllablesGenerator
 {
-    internal class RatingSyllablesGenerator : AbstractSyllableGenerator
+    internal class RatingSyllablesGenerator : AbstractGenerator
     {
         private Dictionary<string, int> Syllables = new Dictionary<string, int>();
 
-        public override string GenerateSyllable()
+        protected override string Generate()
         {
-            string syllable = Syllables.Keys.ElementAt(random.Next(0, Settings.MaxRating)).ToUpper();
-            if (syllable == prevSyllable)
-            {
-                return GenerateSyllable();
-            }
-            else
-            {
-                prevSyllable = syllable;
-                return syllable;
-            }
+            return Syllables.Keys.ElementAt(random.Next(0, Size)).ToUpper();
         }
 
         public override string GetShortSettings()
         {
-            return $"Rating - Maximum rating: {Settings.MaxRating}";
+            return $"Rating - Maximum rating: {Size}";
         }
 
         public int GetLength()

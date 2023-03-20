@@ -4,6 +4,7 @@
     {
         Random = 0,
         Rating = 1,
-        Cards = 2,
+        CardSyllables = 2,
+        CardWords = 3,
     }
 }

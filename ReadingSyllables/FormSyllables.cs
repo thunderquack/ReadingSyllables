@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReadingSyllables.Exceptions;
 using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
@@ -11,10 +12,26 @@ namespace ReadingSyllables
 {
     public partial class FormSyllables : Form
     {
-        private string syllable = "";
-        private string nextSyllable = "";
+        public string CurrentPiece
+        {
+            get
+            {
+                return piecesGenerator.GetCurrentPiece();
+            }
+        }
+
+        public string NextPiece
+        {
+            get
+            {
+                return piecesGenerator.GetNextPiece();
+            }
+        }
+
         private Settings settings;
-        private AbstractSyllableGenerator syllablesGenerator;
+        private AbstractGenerator piecesGenerator;
+        private string construction = string.Empty;
+        private int currentSyllable = 0;
 
         private SyllablesContext context
         {
@@ -41,39 +58,51 @@ namespace ReadingSyllables
             {
                 case ApplicationMode.Random:
                 default:
-                    syllablesGenerator = new RandomSyllablesGenerator(settings);
-                    (syllablesGenerator as RandomSyllablesGenerator).SetLength(2);
-                    syllable = syllablesGenerator.GenerateSyllable();
+                    piecesGenerator = new RandomSyllablesGenerator(settings);
+                    piecesGenerator.Size = 2;
                     break;
 
                 case ApplicationMode.Rating:
-                    syllablesGenerator = new RatingSyllablesGenerator(settings);
-                    syllable = syllablesGenerator.GenerateSyllable();
+                    piecesGenerator = new RatingSyllablesGenerator(settings);
                     break;
 
-                case ApplicationMode.Cards:
+                case ApplicationMode.CardSyllables:
+                    ImportCards();
+                    piecesGenerator = new CardSyllablesGenerator(settings);
+                    break;
+
+                case ApplicationMode.CardWords:
                     ImportCards();
                     ImportWords();
-                    syllablesGenerator = new CardsSyllablesGenerator(settings);
-                    syllable = syllablesGenerator.GenerateSyllable();
+                    piecesGenerator = new CardWordsGenerator(settings);
                     break;
             }
+            rbText.Text = CurrentPiece.ToUpper();
+            if (piecesGenerator is IHasConstruction)
+            {
+                construction = ((IHasConstruction)piecesGenerator).GetConstruction().ToUpper();
+            }
+            ResizeLabel();
+            ShowSettingsInTitle();
         }
 
         private void ImportWords()
         {
             string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
-            var words = JsonConvert.DeserializeObject(json);
+
+            var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
             Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
-            foreach (JToken word in (words as JObject).Children().ToList())
+            Dictionary<string, string> constructions = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, JObject> word in wordsDict)
             {
-                string key = word.Path.ToLower();
+                string key = word.Key.ToLower();
                 List<string> values = new List<string>();
-                foreach (var val in word.Values().ToList())
+                foreach (var syllable in word.Value["syllables"])
                 {
-                    values.Add(val.ToString().ToLower());
+                    values.Add(syllable.ToString());
                 }
                 loadedWords.Add(key, values);
+                constructions.Add(key, word.Value["split_word"].ToString()); // ugly but fast
             }
             var dbWordsList = context.Words.ToList();
             foreach (var word in dbWordsList)
@@ -101,6 +130,7 @@ namespace ReadingSyllables
                 {
                     dbWord.Syllables = lSyllables;
                 }
+                dbWord.Construction = constructions[word.Key];
             }
             context.SaveChanges();
         }
@@ -129,12 +159,13 @@ namespace ReadingSyllables
 
         private void ShowSettingsInTitle()
         {
-            Text = $"{syllable} - {syllablesGenerator.GetShortSettings()}";
+            Text = $"{piecesGenerator.GetNextPiece()} - {piecesGenerator.GetShortSettings()}";
         }
 
         private void FormSyllables_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
+            bool keyProcessed = false;
 
             // Button Presses
 
@@ -146,93 +177,173 @@ namespace ReadingSyllables
 
             if (e.KeyCode == Keys.F11)
             {
+                keyProcessed = true;
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
-                    default:
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.MaxRating > 2)
+                        if (piecesGenerator.Settings.Size > 2)
                         {
-                            syllablesGenerator.Settings.MaxRating--;
+                            piecesGenerator.Settings.Size--;
                             ShowSettingsInTitle();
                         }
                         return;
+
+                    default:
+                        piecesGenerator.Size--;
+                        ShowSettingsInTitle();
+                        break;
                 }
             }
 
             if (e.KeyCode == Keys.F12)
             {
+                keyProcessed = true;
                 switch (settings.Mode)
                 {
                     case ApplicationMode.Random:
-                    default:
                         return;
 
                     case ApplicationMode.Rating:
-                        if (syllablesGenerator.Settings.MaxRating < (syllablesGenerator as RatingSyllablesGenerator).GetLength() - 1)
+                        if (piecesGenerator.Settings.Size < (piecesGenerator as RatingSyllablesGenerator).GetLength() - 1)
                         {
-                            syllablesGenerator.Settings.MaxRating++;
+                            piecesGenerator.Settings.Size++;
                             ShowSettingsInTitle();
                         }
                         return;
+
+                    default:
+                        piecesGenerator.Size++;
+                        ShowSettingsInTitle();
+                        break;
                 }
             }
 
-            if (settings.Mode == ApplicationMode.Cards)
+            if (settings.Mode == ApplicationMode.CardSyllables || settings.Mode == ApplicationMode.CardWords)
             {
-                string shownSyllable = labelSyllable.Text.ToLower();
+                Keys[] keyCodes = { Keys.F7, Keys.F8, Keys.F9, Keys.F10 };
 
-                // Bad
-                if (e.KeyCode == Keys.F8)
+                if (keyCodes.Contains(e.KeyCode))
                 {
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show = 0;
-                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                    _ = title.SetTitle($"Bad - {s.NextShow}");
+                    keyProcessed = true;
+                    var cardGenerator = piecesGenerator as ICardGenerator;
+                    if (cardGenerator == null)
+                    {
+                        return;
+                    }
+                    // Bad
+                    if (e.KeyCode == Keys.F8)
+                    {
+                        _ = title.SetTitle(cardGenerator.DoBad());
+                    }
+
+                    // Average
+                    if (e.KeyCode == Keys.F9)
+                    {
+                        _ = title.SetTitle(cardGenerator.DoAverage());
+                    }
+
+                    // Good
+                    if (e.KeyCode == Keys.F10)
+                    {
+                        _ = title.SetTitle(cardGenerator.DoGood());
+                    }
                     context.SaveChanges();
                 }
-
-                // Average
-                if (e.KeyCode == Keys.F9)
+                if (settings.Mode == ApplicationMode.CardWords)
                 {
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show++;
-                    s.NextShow = RepeatingRule.GetNextRepeat(s.Show);
-                    _ = title.SetTitle($"Average - {s.NextShow}");
-                    context.SaveChanges();
-                }
-
-                // Good
-                if (e.KeyCode == Keys.F10)
-                {
-                    var s = context.Syllables.FirstOrDefault(x => x.Name == shownSyllable);
-                    s.Show++;
-                    s.NextShow = RepeatingRule.GetNextRepeat(++s.Show);
-                    _ = title.SetTitle($"Good - {s.NextShow}");
-                    context.SaveChanges();
+                    if (e.KeyCode == Keys.Right)
+                    {
+                        MoveHighlightToRight();                        
+                    }
+                    if (e.KeyCode == Keys.Left)
+                    {
+                        MoveHighlightToLeft();
+                    }
                 }
             }
+            if (keyProcessed)
+            {
+                try
+                {
+                    rbText.Text = piecesGenerator.GetCurrentPieceAndGenerateNext().ToUpper();
+                    if (piecesGenerator is IHasConstruction)
+                    {
+                        construction = ((IHasConstruction)piecesGenerator).GetConstruction().ToUpper();
+                    }
+                    currentSyllable = 0;
+                }
+                catch (NotEnoughWordsException ex)
+                {
+                    MessageBox.Show("Не получается сгенерировать слова," + Environment.NewLine +
+                        "Возможно следует вернуться к слогам",
+                        caption: "Ошибка",
+                        icon: MessageBoxIcon.Stop,
+                        buttons: MessageBoxButtons.OK);
+                    Environment.Exit(-1);
+                }
+                ShowSettingsInTitle();
+                ResizeLabel();
+            }
+        }
 
-            nextSyllable = syllablesGenerator.GenerateSyllable();
-            labelSyllable.Text = syllable;
-            syllable = nextSyllable;
-            ShowSettingsInTitle();
-            ResizeLabel();
+        private void MoveHighlightToLeft()
+        {
+            if (currentSyllable == 0)
+            {
+                return;
+            }
+            currentSyllable--;
+            DrawSyllable();
+        }
+
+        private void DrawSyllable()
+        {
+            int position = 0;
+            int sylalblePosition = 0;
+            int i = 0;
+            var syllables = construction.Split("|").ToList();
+            while (sylalblePosition < syllables.Count)
+            {
+                int startPosition = position;
+                position = startPosition + syllables[i].Length;
+                rbText.Select(startPosition, syllables[i].Length);
+                if (sylalblePosition == currentSyllable)
+                {
+                    rbText.SelectionColor = Color.Green;
+                }
+                else
+                {
+                    rbText.SelectionColor = Color.DarkBlue;
+                }
+                sylalblePosition++;
+                i++;
+            }
+        }
+
+        private void MoveHighlightToRight()
+        {
+            if (currentSyllable == construction.Split("|").Length - 1)
+            {
+                return;
+            }
+            currentSyllable++;
+            DrawSyllable();
         }
 
         private void ResizeLabel()
         {
-            Graphics graphics = labelSyllable.CreateGraphics();
-            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
-            int titleHeight = screenRectangle.Top - this.Top;
-            int height = this.Height - titleHeight;
-            Font font = new Font(labelSyllable.Font.FontFamily, height, labelSyllable.Font.Style);
+            Graphics graphics = rbText.CreateGraphics();
+            Rectangle screenRectangle = RectangleToScreen(ClientRectangle);
+            int titleHeight = screenRectangle.Top - Top;
+            int height = Height - titleHeight;
+            Font font = new Font(rbText.Font.FontFamily, height, rbText.Font.Style);
             int minFontSize = 8;
-            SizeF size = graphics.MeasureString(labelSyllable.Text, font);
+            SizeF size = graphics.MeasureString(rbText.Text, font);
             float fontSize = font.Size;
-            while (size.Width > labelSyllable.Width - 100 || size.Height > labelSyllable.Height)
+            while (size.Width > rbText.Width - 100 || size.Height > rbText.Height)
             {
                 fontSize--;
                 if (fontSize < minFontSize)
@@ -242,15 +353,35 @@ namespace ReadingSyllables
                     break;
                 }
                 font = new Font(font.FontFamily, fontSize, font.Style);
-                size = graphics.MeasureString(labelSyllable.Text, font);
+                size = graphics.MeasureString(rbText.Text, font);
             }
-            labelSyllable.Font = font;
+            rbText.Font = font;
             graphics.Dispose();
         }
 
         internal void SetTitle(string title)
         {
             Text = title;
+        }
+
+        private void rbText_TextChanged(object sender, EventArgs e)
+        {
+            Redraw();
+        }
+
+        private void FormSyllables_Load(object sender, EventArgs e)
+        {
+            currentSyllable = 0;
+            Redraw();
+        }
+
+        private void Redraw()
+        {
+            rbText.SelectAll();
+            rbText.SelectionAlignment = HorizontalAlignment.Center;
+            rbText.ForeColor = Color.DarkBlue;
+            rbText.DeselectAll();
+            DrawSyllable();
         }
     }
 }

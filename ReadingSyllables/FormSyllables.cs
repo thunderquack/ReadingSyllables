@@ -19,6 +19,7 @@ namespace ReadingSyllables
                 return piecesGenerator.GetCurrentPiece();
             }
         }
+
         public string NextPiece
         {
             get
@@ -26,6 +27,7 @@ namespace ReadingSyllables
                 return piecesGenerator.GetNextPiece();
             }
         }
+
         private Settings settings;
         private AbstractGenerator piecesGenerator;
         private string construction = string.Empty;
@@ -251,17 +253,24 @@ namespace ReadingSyllables
                     }
                     context.SaveChanges();
                 }
-                if (e.KeyCode == Keys.Right)
+                if (settings.Mode == ApplicationMode.CardWords)
                 {
-                    Random r = new();
-                    int i = r.Next(rbText.Text.Length);
-                    rbText.Select(0, rbText.Text.Length);
-                    rbText.SelectionColor = Color.DarkBlue;
-                    rbText.Select(0, i);
-                    rbText.SelectionColor = Color.Green;
+                    if (e.KeyCode == Keys.Right)
+                    {
+                        MoveHighlightToRight();
+                        Random r = new();
+                        int i = r.Next(rbText.Text.Length);
+                        rbText.Select(0, rbText.Text.Length);
+                        rbText.SelectionColor = Color.DarkBlue;
+                        rbText.Select(0, i);
+                        rbText.SelectionColor = Color.Green;
+                    }
+                    if (e.KeyCode == Keys.Left)
+                    {
+                        MoveHighlightToLeft();
+                    }
                 }
             }
-
             if (keyProcessed)
             {
                 try
@@ -284,6 +293,31 @@ namespace ReadingSyllables
                 ShowSettingsInTitle();
                 ResizeLabel();
             }
+        }
+
+        private void MoveHighlightToLeft()
+        {
+            if (currentSyllable == 0)
+            {
+                return;
+            }
+            currentSyllable--;
+            DrawSyllable();
+        }
+
+        private void DrawSyllable()
+        {
+            if (currentSyllable == construction.Split("|").Length - 1)
+            {
+                return;
+            }
+            currentSyllable++;
+            DrawSyllable();
+        }
+
+        private void MoveHighlightToRight()
+        {
+            throw new NotImplementedException();
         }
 
         private void ResizeLabel()

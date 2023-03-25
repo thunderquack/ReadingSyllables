@@ -124,9 +124,9 @@ namespace ReadingSyllables
                         Name = word.Key,
                     };
                     context.Words.Add(dbWord);
-                };
+                }
                 var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
-                if (!dbWord.Syllables.Equals(lSyllables))
+                if (!Convert.ToBoolean(dbWord.Syllables?.SetEquals(lSyllables)))
                 {
                     dbWord.Syllables = lSyllables;
                 }

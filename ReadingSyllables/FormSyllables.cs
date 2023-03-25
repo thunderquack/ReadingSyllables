@@ -316,7 +316,7 @@ namespace ReadingSyllables
                 }
                 else
                 {
-                    rbText.SelectionColor = Color.DarkBlue;
+                    rbText.SelectionColor = Color.DarkViolet;
                 }
                 sylalblePosition++;
                 i++;
@@ -379,7 +379,7 @@ namespace ReadingSyllables
         {
             rbText.SelectAll();
             rbText.SelectionAlignment = HorizontalAlignment.Center;
-            rbText.ForeColor = Color.DarkBlue;
+            rbText.ForeColor = Color.DarkViolet;
             rbText.DeselectAll();
             DrawSyllable();
         }

@@ -228,12 +228,31 @@ namespace ReadingSyllables
             DrawSyllable();
         }
 
+        private void MoveHighlightToRight()
+        {
+            if (currentSyllable == construction.Split("|").Length)
+            {
+                return;
+            }
+            currentSyllable++;
+            DrawSyllable();
+        }
+
         private void DrawSyllable()
         {
             int position = 0;
             int sylalblePosition = 0;
             int i = 0;
             var syllables = construction.Split("|").ToList();
+
+            if (currentSyllable == syllables.Count)
+            {
+                rbText.Select(0, CurrentPiece.Length);
+                rbText.SelectionColor = Color.Indigo; 
+                rbText.DeselectAll();
+                return;
+            }
+
             while (sylalblePosition < syllables.Count)
             {
                 int startPosition = position;
@@ -251,17 +270,6 @@ namespace ReadingSyllables
                 i++;
             }
         }
-
-        private void MoveHighlightToRight()
-        {
-            if (currentSyllable == construction.Split("|").Length - 1)
-            {
-                return;
-            }
-            currentSyllable++;
-            DrawSyllable();
-        }
-
         private void ResizeLabel()
         {
             Graphics graphics = rbText.CreateGraphics();

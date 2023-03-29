@@ -86,6 +86,7 @@ namespace ReadingSyllables
             ResizeLabel();
             ShowSettingsInTitle();
         }
+
         private void ShowSettingsInTitle()
         {
             Text = $"{piecesGenerator.GetNextPiece()} - {piecesGenerator.GetShortSettings()}";
@@ -248,7 +249,7 @@ namespace ReadingSyllables
             if (currentSyllable == syllables.Count)
             {
                 rbText.Select(0, CurrentPiece.Length);
-                rbText.SelectionColor = Color.Indigo; 
+                rbText.SelectionColor = Color.Indigo;
                 rbText.DeselectAll();
                 return;
             }
@@ -270,6 +271,7 @@ namespace ReadingSyllables
                 i++;
             }
         }
+
         private void ResizeLabel()
         {
             Graphics graphics = rbText.CreateGraphics();

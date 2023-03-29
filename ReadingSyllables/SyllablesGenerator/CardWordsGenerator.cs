@@ -10,17 +10,23 @@ namespace ReadingSyllables.SyllablesGenerator
         protected override string Generate()
         {
             var list = Context.Syllables.OrderBy(x => x.Id).Where(x => x.Show >= Size).ToList();
-            var words = Context.Words.Where(w => w.Syllables.All(s => list.Contains(s) && w.NextShow < DateTime.UtcNow)).ToList();
+            var words = Context.Words
+                .Where(w => w.Syllables.All(s => list.Contains(s) && w.NextShow < DateTime.UtcNow))
+                .ToList();
+            words = words.OrderBy(x => x.GetSyllablesCount()).ToList();
             if (words.Count < 3)
             {
                 throw new NotEnoughWordsException();
             }
-            var idx = random.Next(words.Count());
-            words.ElementAt(idx).ShowCounter++;
+            int minimumSyllables = words[0].GetSyllablesCount();
+            var chosenWords = words.Where(x => x.GetSyllablesCount() == minimumSyllables);
+            var idx = random.Next(chosenWords.Count());
+            var chosenWord = words.ElementAt(idx);
+            chosenWord.ShowCounter++;
             Context.SaveChanges();
             construction = futureConstruction;
-            futureConstruction = words.ElementAt(idx).GetConstruction();           
-            return words.ElementAt(idx).Name;
+            futureConstruction = chosenWord.GetConstruction();
+            return chosenWord.Name;
         }
 
         public override string GetShortSettings()

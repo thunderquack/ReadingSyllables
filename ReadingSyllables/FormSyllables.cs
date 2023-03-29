@@ -6,6 +6,7 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ReadingSyllables
@@ -85,78 +86,6 @@ namespace ReadingSyllables
             ResizeLabel();
             ShowSettingsInTitle();
         }
-
-        private void ImportWords()
-        {
-            string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
-
-            var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
-            Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
-            Dictionary<string, string> constructions = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, JObject> word in wordsDict)
-            {
-                string key = word.Key.ToLower();
-                List<string> values = new List<string>();
-                foreach (var syllable in word.Value["syllables"])
-                {
-                    values.Add(syllable.ToString());
-                }
-                loadedWords.Add(key, values);
-                constructions.Add(key, word.Value["split_word"].ToString()); // ugly but fast
-            }
-            var dbWordsList = context.Words.ToList();
-            foreach (var word in dbWordsList)
-            {
-                if (!loadedWords.ContainsKey(word.Name))
-                {
-                    context.Words.Remove(word);
-                }
-            }
-            context.SaveChanges();
-            dbWordsList = context.Words.ToList();
-            foreach (var word in loadedWords)
-            {
-                Word? dbWord = dbWordsList.FirstOrDefault(x => x.Name == word.Key);
-                if (dbWord == null)
-                {
-                    dbWord = new Word()
-                    {
-                        Name = word.Key,
-                    };
-                    context.Words.Add(dbWord);
-                };
-                var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
-                if (!dbWord.Syllables.Equals(lSyllables))
-                {
-                    dbWord.Syllables = lSyllables;
-                }
-                dbWord.Construction = constructions[word.Key];
-            }
-            context.SaveChanges();
-        }
-
-        private void ImportCards()
-        {
-            string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
-            var sylls = JsonConvert.DeserializeObject(json);
-            foreach (JObject item in (sylls as JArray))
-            {
-                int rating = Convert.ToInt32(item.GetValue("value"));
-                string name = Convert.ToString(item.GetValue("name"));
-                var dbSyll = context.Syllables.FirstOrDefault(x => x.Name == name);
-                if (dbSyll == null)
-                {
-                    Syllable s = new()
-                    {
-                        Rating = rating,
-                        Name = name,
-                    };
-                    context.Syllables.Add(s);
-                }
-            }
-            context.SaveChanges();
-        }
-
         private void ShowSettingsInTitle()
         {
             Text = $"{piecesGenerator.GetNextPiece()} - {piecesGenerator.GetShortSettings()}";
@@ -256,7 +185,7 @@ namespace ReadingSyllables
                 {
                     if (e.KeyCode == Keys.Right)
                     {
-                        MoveHighlightToRight();                        
+                        MoveHighlightToRight();
                     }
                     if (e.KeyCode == Keys.Left)
                     {
@@ -316,7 +245,7 @@ namespace ReadingSyllables
                 }
                 else
                 {
-                    rbText.SelectionColor = Color.DarkBlue;
+                    rbText.SelectionColor = Color.DarkViolet;
                 }
                 sylalblePosition++;
                 i++;
@@ -379,9 +308,124 @@ namespace ReadingSyllables
         {
             rbText.SelectAll();
             rbText.SelectionAlignment = HorizontalAlignment.Center;
-            rbText.ForeColor = Color.DarkBlue;
+            rbText.ForeColor = Color.DarkViolet;
             rbText.DeselectAll();
             DrawSyllable();
+        }
+
+        private void ImportCards()
+        {
+            var hash = CalculateSHA256(settings.FileName);
+            if (context.UploadedFiles
+                .Where(x => x.UploadedFileType == UploadedFileType.SyllablesRating)
+                .Where(x => x.HashSum.SequenceEqual(hash))
+                .FirstOrDefault() != null)
+            {
+                return;
+            }
+
+            string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
+            var sylls = JsonConvert.DeserializeObject(json);
+            foreach (JObject item in (sylls as JArray))
+            {
+                int rating = Convert.ToInt32(item.GetValue("value"));
+                string name = Convert.ToString(item.GetValue("name"));
+                var dbSyll = context.Syllables.FirstOrDefault(x => x.Name == name);
+                if (dbSyll == null)
+                {
+                    Syllable s = new()
+                    {
+                        Rating = rating,
+                        Name = name,
+                    };
+                    context.Syllables.Add(s);
+                }
+            }
+            UploadedFile file = new()
+            {
+                DateTime = DateTime.UtcNow,
+                HashSum = hash,
+                UploadedFileType = UploadedFileType.SyllablesRating
+            };
+            context.UploadedFiles.Add(file);
+            context.SaveChanges();
+        }
+
+        private void ImportWords()
+        {
+            var hash = CalculateSHA256(settings.WordsList);
+            if (context.UploadedFiles
+                .Where(x => x.UploadedFileType == UploadedFileType.StructuredWords)
+                .Where(x => x.HashSum.SequenceEqual(hash))
+                .FirstOrDefault() != null)
+            {
+                return;
+            }
+
+            string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
+
+            var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
+            Dictionary<string, List<string>> loadedWords = new Dictionary<string, List<string>>();
+            Dictionary<string, string> constructions = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, JObject> word in wordsDict)
+            {
+                string key = word.Key.ToLower();
+                List<string> values = new List<string>();
+                foreach (var syllable in word.Value["syllables"])
+                {
+                    values.Add(syllable.ToString());
+                }
+                loadedWords.Add(key, values);
+                constructions.Add(key, word.Value["split_word"].ToString()); // ugly but fast
+            }
+            var dbWordsList = context.Words.ToList();
+            foreach (var word in dbWordsList)
+            {
+                if (!loadedWords.ContainsKey(word.Name))
+                {
+                    context.Words.Remove(word);
+                }
+            }
+            context.SaveChanges();
+            dbWordsList = context.Words.ToList();
+            foreach (var word in loadedWords)
+            {
+                Word? dbWord = dbWordsList.FirstOrDefault(x => x.Name == word.Key);
+                if (dbWord == null)
+                {
+                    dbWord = new Word()
+                    {
+                        Name = word.Key,
+                    };
+                    context.Words.Add(dbWord);
+                }
+                var lSyllables = context.Syllables.Where(x => word.Value.Contains(x.Name)).ToHashSet();
+                if (!Convert.ToBoolean(dbWord.Syllables?.SetEquals(lSyllables)))
+                {
+                    dbWord.Syllables = lSyllables;
+                }
+                dbWord.Construction = constructions[word.Key];
+            }
+            UploadedFile file = new()
+            {
+                DateTime = DateTime.UtcNow,
+                HashSum = hash,
+                UploadedFileType = UploadedFileType.StructuredWords
+            };
+            context.UploadedFiles.Add(file);
+            context.SaveChanges();
+        }
+
+        public static byte[] CalculateSHA256(string filePath)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    var hash = sha256.ComputeHash(fileStream);
+                    return hash;
+                }
+            }
         }
     }
 }

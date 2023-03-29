@@ -7,7 +7,7 @@ namespace ReadingSyllables.Models
         public string DbPath { get; }
         public DbSet<Syllable> Syllables { get; set; }
         public DbSet<Word> Words { get; set; }
-
+        public DbSet<UploadedFile> UploadedFiles { get; set; }
         public SyllablesContext()
         {
             var folder = Directory.GetCurrentDirectory();

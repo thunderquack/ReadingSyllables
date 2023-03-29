@@ -385,14 +385,14 @@ namespace ReadingSyllables
             context.SaveChanges();
         }
 
-        public static string CalculateSHA256(string filePath)
+        public static byte[] CalculateSHA256(string filePath)
         {
             using (var sha256 = SHA256.Create())
             {
                 using (var fileStream = File.OpenRead(filePath))
                 {
                     var hash = sha256.ComputeHash(fileStream);
-                    return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                    return hash;
                 }
             }
         }

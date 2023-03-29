@@ -18,5 +18,10 @@ namespace ReadingSyllables.Models
         {
             return Construction ?? string.Empty;
         }
+
+        public int GetSyllablesCount()
+        {
+            return Construction != null ? Construction.Split("|").Length : 0;
+        }
     }
 }

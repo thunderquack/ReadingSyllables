@@ -256,7 +256,7 @@ namespace ReadingSyllables
                 {
                     if (e.KeyCode == Keys.Right)
                     {
-                        MoveHighlightToRight();                        
+                        MoveHighlightToRight();
                     }
                     if (e.KeyCode == Keys.Left)
                     {

@@ -315,6 +315,14 @@ namespace ReadingSyllables
 
         private void ImportCards()
         {
+            var hash = CalculateSHA256(settings.FileName);
+            if (context.UploadedFiles
+                .Where(x => x.UploadedFileType == UploadedFileType.SyllablesRating)
+                .Where(x => x.HashSum.SequenceEqual(hash))
+                .FirstOrDefault() != null)
+            {
+                return;
+            }
 
             string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
             var sylls = JsonConvert.DeserializeObject(json);
@@ -333,11 +341,27 @@ namespace ReadingSyllables
                     context.Syllables.Add(s);
                 }
             }
+            UploadedFile file = new()
+            {
+                DateTime = DateTime.UtcNow,
+                HashSum = hash,
+                UploadedFileType = UploadedFileType.SyllablesRating
+            };
+            context.UploadedFiles.Add(file);
             context.SaveChanges();
         }
 
         private void ImportWords()
         {
+            var hash = CalculateSHA256(settings.WordsList);
+            if (context.UploadedFiles
+                .Where(x => x.UploadedFileType == UploadedFileType.StructuredWords)
+                .Where(x => x.HashSum.SequenceEqual(hash))
+                .FirstOrDefault() != null)
+            {
+                return;
+            }
+
             string json = File.ReadAllText(settings.WordsList, Encoding.UTF8);
 
             var wordsDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(json);
@@ -382,6 +406,13 @@ namespace ReadingSyllables
                 }
                 dbWord.Construction = constructions[word.Key];
             }
+            UploadedFile file = new()
+            {
+                DateTime = DateTime.UtcNow,
+                HashSum = hash,
+                UploadedFileType = UploadedFileType.StructuredWords
+            };
+            context.UploadedFiles.Add(file);
             context.SaveChanges();
         }
 

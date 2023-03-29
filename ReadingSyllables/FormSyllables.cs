@@ -6,6 +6,7 @@ using ReadingSyllables.Models;
 using ReadingSyllables.Services;
 using ReadingSyllables.Statistics;
 using ReadingSyllables.SyllablesGenerator;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ReadingSyllables
@@ -314,6 +315,7 @@ namespace ReadingSyllables
 
         private void ImportCards()
         {
+
             string json = File.ReadAllText(settings.FileName, Encoding.UTF8);
             var sylls = JsonConvert.DeserializeObject(json);
             foreach (JObject item in (sylls as JArray))
@@ -381,6 +383,18 @@ namespace ReadingSyllables
                 dbWord.Construction = constructions[word.Key];
             }
             context.SaveChanges();
+        }
+
+        public static string CalculateSHA256(string filePath)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    var hash = sha256.ComputeHash(fileStream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                }
+            }
         }
     }
 }

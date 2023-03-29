@@ -1,6 +1,9 @@
-﻿namespace ReadingSyllables.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ReadingSyllables.Models
 {
-    internal abstract class UploadedFile
+    [Index(nameof(HashSum), IsUnique = true)]
+    public class UploadedFile
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }

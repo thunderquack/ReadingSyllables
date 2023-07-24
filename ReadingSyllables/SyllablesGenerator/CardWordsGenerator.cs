@@ -19,9 +19,13 @@ namespace ReadingSyllables.SyllablesGenerator
                 throw new NotEnoughWordsException();
             }
             int minimumSyllables = words[0].GetSyllablesCount();
-            var chosenWords = words.Where(x => x.GetSyllablesCount() == minimumSyllables);
+            var chosenWords = words.Where(x => x.GetSyllablesCount() <= minimumSyllables);
+            if (chosenWords.Count() < 3)
+            {
+                chosenWords = words.Where(x => x.GetSyllablesCount() <= minimumSyllables + 1);
+            }
             var idx = random.Next(chosenWords.Count());
-            var chosenWord = words.ElementAt(idx);
+            var chosenWord = words[idx];
             chosenWord.ShowCounter++;
             Context.SaveChanges();
             construction = futureConstruction;
